@@ -1,0 +1,721 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333333;
+    background: #ffffff;
+    overflow-x: hidden;
+    padding-bottom: 80px; /* Space for bottom navigation */
+}
+
+/* App Header */
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-img {
+    display: none;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FF5500, #FF8A00, #FFA500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 4px rgba(255, 85, 0, 0.3);
+    letter-spacing: -0.5px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    position: relative;
+}
+
+.logo-text::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, #FF5500, #FF8A00);
+    border-radius: 1px;
+    opacity: 0.7;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notification-btn,
+.profile-btn {
+    background: rgba(255, 85, 0, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FF5500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.notification-btn:hover,
+.profile-btn:hover {
+    background: rgba(255, 85, 0, 0.2);
+    color: #FF5500;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #FF5500;
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 600;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dashboard */
+.dashboard {
+    padding-top: 84px;
+    min-height: 100vh;
+    background: #ffffff;
+}
+
+.dashboard-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* Welcome Section */
+.welcome-section {
+    padding: 16px 0;
+    text-align: center;
+}
+
+.welcome-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #333333;
+}
+
+.welcome-subtitle {
+    color: #666666;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #333333;
+    text-align: left;
+    padding-left: 4px;
+}
+
+/* Categories Section */
+.categories-section {
+    margin-bottom: 24px;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.category-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 85, 0, 0.15);
+    border-color: rgba(255, 85, 0, 0.3);
+}
+
+.category-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 8px;
+    background: #FF5500;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.category-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333333;
+    line-height: 1.2;
+    margin: 0;
+}
+
+/* General Tools Section */
+.general-tools-section {
+    margin-bottom: 24px;
+}
+
+/* Widgets Section */
+.widgets-section,
+.general-tools-section {
+    margin-bottom: 16px;
+}
+
+.widgets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-bottom: 8px;
+}
+
+/* Category-specific Widgets */
+.category-widgets {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffffff;
+    z-index: 1500;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    padding-bottom: 80px;
+}
+
+.category-widgets.show {
+    transform: translateX(0);
+}
+
+.category-widgets.hidden {
+    display: none;
+}
+
+.category-header {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.back-to-main {
+    background: rgba(255, 85, 0, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FF5500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-to-main:hover {
+    background: rgba(255, 85, 0, 0.2);
+}
+
+.category-widgets .widgets-grid {
+    padding: 20px;
+    max-height: none;
+    overflow: visible;
+}
+
+/* Specific colors for category widgets */
+#math-widgets .widget-icon { background: #FF6B6B; }
+#english-widgets .widget-icon { background: #4ECDC4; }
+#korean-widgets .widget-icon { background: #45B7D1; }
+#social-widgets .widget-icon { background: #96CEB4; }
+#science-widgets .widget-icon { background: #FFEAA7; color: #2d3436; }
+#etc-widgets .widget-icon { background: #DDA0DD; }
+
+.widget-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.widget-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #FF5500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.widget-card:hover {
+    transform: translateY(-2px);
+    background: #ffffff;
+    border-color: rgba(255, 85, 0, 0.3);
+    box-shadow: 0 6px 25px rgba(255, 85, 0, 0.15);
+}
+
+.widget-card:hover::before {
+    opacity: 1;
+}
+
+.widget-card:active {
+    transform: translateY(-1px);
+}
+
+/* Widget Icons with Different Colors */
+.widget-icon {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+/* Individual Widget Icon Colors - Updated for all widgets */
+.widget-card:nth-child(1) .widget-icon { background: #FF6B6B; } /* 시험 요약봇 - Red */
+.widget-card:nth-child(2) .widget-icon { background: #4ECDC4; } /* 영어 에세이 첨삭 - Teal */
+.widget-card:nth-child(3) .widget-icon { background: #45B7D1; } /* 수학풀이 도우미 - Blue */
+.widget-card:nth-child(4) .widget-icon { background: #96CEB4; } /* 암기 카드 만들기 - Green */
+.widget-card:nth-child(5) .widget-icon { background: #FFEAA7; color: #2d3436; } /* 동아리 보고서 초안 - Yellow */
+.widget-card:nth-child(6) .widget-icon { background: #DDA0DD; } /* 자소서 보고서 초안 - Purple */
+.widget-card:nth-child(7) .widget-icon { background: #98D8C8; } /* 면접 질문 연습 - Mint */
+.widget-card:nth-child(8) .widget-icon { background: #F7DC6F; color: #2d3436; } /* 진로 탐색 도우미 - Gold */
+.widget-card:nth-child(9) .widget-icon { background: #BB8FCE; } /* 학급 공지 요약 - Lavender */
+.widget-card:nth-child(10) .widget-icon { background: #85C1E9; } /* 친구와 대화 연습하기 - Sky Blue */
+.widget-card:nth-child(11) .widget-icon { background: #F8C471; color: #2d3436; } /* 학습 스케줄러 - Orange */
+.widget-card:nth-child(12) .widget-icon { background: #F1948A; } /* 멘탈케어 위젯 - Pink */
+.widget-card:nth-child(13) .widget-icon { background: #82E0AA; } /* 웹툰 아이디어 봇 - Light Green */
+.widget-card:nth-child(14) .widget-icon { background: #D7BDE2; } /* 영상 시나리오 작성기 - Light Purple */
+.widget-card:nth-child(15) .widget-icon { background: #A3E4D7; } /* 랩 가사 도우미 - Aqua */
+.widget-card:nth-child(16) .widget-icon { background: #F9E79F; color: #2d3436; } /* 그림 디자인 봇 - Light Yellow */
+.widget-card:nth-child(17) .widget-icon { background: #D5A6BD; } /* 생기부 도우미 - Rose */
+.widget-card:nth-child(18) .widget-icon { background: #A9CCE3; } /* 수행평가 봇 - Powder Blue */
+
+/* 새로 추가된 위젯들 - 수학 관련 */
+.widget-card:nth-child(19) .widget-icon { background: #FF4757; } /* 공식암기 카드 - Bright Red */
+.widget-card:nth-child(20) .widget-icon { background: #3742FA; } /* 그래프 시각화 - Bright Blue */
+.widget-card:nth-child(21) .widget-icon { background: #FF6348; } /* 오답노트 자동 생성기 - Orange Red */
+
+/* 새로 추가된 위젯들 - 영어 관련 */
+.widget-card:nth-child(22) .widget-icon { background: #2ED573; } /* 에세이 첨삭 도우미 - Bright Green */
+.widget-card:nth-child(23) .widget-icon { background: #1E90FF; } /* 발음 교정기 - Dodger Blue */
+.widget-card:nth-child(24) .widget-icon { background: #FF7675; } /* 독해 요약 훈련 - Light Red */
+.widget-card:nth-child(25) .widget-icon { background: #6C5CE7; } /* 영어 회화 챗봇 - Purple */
+
+/* 새로 추가된 위젯들 - 국어 관련 */
+.widget-card:nth-child(26) .widget-icon { background: #00B894; } /* 비문학 지문 요약기 - Teal Green */
+.widget-card:nth-child(27) .widget-icon { background: #E17055; } /* 문학작품 해석 - Coral */
+.widget-card:nth-child(28) .widget-icon { background: #0984E3; } /* 어휘 학습 카드 - Blue */
+.widget-card:nth-child(29) .widget-icon { background: #A29BFE; } /* 작문 첨삭 - Light Purple */
+.widget-card:nth-child(30) .widget-icon { background: #FD79A8; } /* 고전 문학 풀이 - Pink */
+.widget-card:nth-child(31) .widget-icon { background: #FDCB6E; color: #2d3436; } /* 구문 분석기 - Yellow */
+
+/* 새로 추가된 위젯들 - 사탐 관련 */
+.widget-card:nth-child(32) .widget-icon { background: #6C5CE7; } /* 연표 생성기 - Purple */
+.widget-card:nth-child(33) .widget-icon { background: #00CEC9; } /* 개념 비교표 - Cyan */
+.widget-card:nth-child(34) .widget-icon { background: #55A3FF; } /* 현실세계 개념 연동 - Light Blue */
+.widget-card:nth-child(35) .widget-icon { background: #26DE81; } /* 지도 해석 훈련 - Green */
+
+/* 새로 추가된 위젯들 - 과탐 관련 */
+.widget-card:nth-child(36) .widget-icon { background: #FF3838; } /* 법칙 시뮬레이터 - Red */
+.widget-card:nth-child(37) .widget-icon { background: #2F3542; } /* 가상 실험 체험 - Dark */
+
+/* 새로 추가된 위젯들 - 기타 관련 */
+.widget-card:nth-child(38) .widget-icon { background: #FF9FF3; } /* 친구 생일 알림 - Pink */
+.widget-card:nth-child(39) .widget-icon { background: #54A0FF; } /* 감정기록 다이어리 - Blue */
+.widget-card:nth-child(40) .widget-icon { background: #5F27CD; } /* 동기부여 메시지 - Purple */
+.widget-card:nth-child(41) .widget-icon { background: #00D2D3; } /* 스트레스 해소 챌린지 - Turquoise */
+
+.widget-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #333333;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.widget-description {
+    color: #666666;
+    font-size: 0.65rem;
+    line-height: 1.2;
+    text-align: center;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    color: #999999;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 6px 8px;
+    border-radius: 8px;
+    min-width: 50px;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: #FF5500;
+    background: rgba(255, 85, 0, 0.1);
+}
+
+.nav-item i {
+    font-size: 1.1rem;
+}
+
+.nav-item span {
+    font-size: 0.65rem;
+    font-weight: 500;
+}
+
+/* Individual Pages */
+.page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ffffff;
+    z-index: 2000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+}
+
+.page.show {
+    transform: translateX(0);
+}
+
+.page.hidden {
+    display: none;
+}
+
+.page-header {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.back-btn {
+    background: rgba(255, 85, 0, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FF5500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: rgba(255, 85, 0, 0.2);
+    color: #FF5500;
+}
+
+.page-header h1 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333333;
+}
+
+.page-content {
+    padding: 20px 16px;
+    max-width: 400px;
+    margin: 0 auto;
+    color: #333333;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    .dashboard-container,
+    .header-content,
+    .nav-items,
+    .page-content {
+        max-width: 100%;
+    }
+
+    .widgets-grid {
+        gap: 6px;
+    }
+
+    .widget-card {
+        padding: 10px;
+        min-height: 90px;
+    }
+
+    .widget-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+
+    .welcome-title {
+        font-size: 1.2rem;
+    }
+
+    .welcome-subtitle {
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 481px) {
+    body {
+        max-width: 400px;
+        margin: 0 auto;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Loading Animation */
+.widget-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Widget animation delays */
+.widget-card:nth-child(1) { animation-delay: 0.1s; }
+.widget-card:nth-child(2) { animation-delay: 0.15s; }
+.widget-card:nth-child(3) { animation-delay: 0.2s; }
+.widget-card:nth-child(4) { animation-delay: 0.25s; }
+.widget-card:nth-child(5) { animation-delay: 0.3s; }
+.widget-card:nth-child(6) { animation-delay: 0.35s; }
+.widget-card:nth-child(7) { animation-delay: 0.4s; }
+.widget-card:nth-child(8) { animation-delay: 0.45s; }
+.widget-card:nth-child(9) { animation-delay: 0.5s; }
+.widget-card:nth-child(10) { animation-delay: 0.55s; }
+.widget-card:nth-child(11) { animation-delay: 0.6s; }
+.widget-card:nth-child(12) { animation-delay: 0.65s; }
+.widget-card:nth-child(13) { animation-delay: 0.7s; }
+.widget-card:nth-child(14) { animation-delay: 0.75s; }
+.widget-card:nth-child(15) { animation-delay: 0.8s; }
+.widget-card:nth-child(16) { animation-delay: 0.85s; }
+.widget-card:nth-child(17) { animation-delay: 0.9s; }
+.widget-card:nth-child(18) { animation-delay: 0.95s; }
+
+/* Smooth transitions */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button, .widget-card, .nav-item {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 85, 0, 0.3);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 85, 0, 0.5);
+} 
+
+/* Category Filter */
+.category-filter {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+    padding: 4px 0;
+}
+
+.filter-btn {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #666666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.filter-btn:hover {
+    background: rgba(255, 85, 0, 0.1);
+    border-color: rgba(255, 85, 0, 0.3);
+    color: #FF5500;
+}
+
+.filter-btn.active {
+    background: #FF5500;
+    border-color: #FF5500;
+    color: #ffffff;
+}
+
+/* Widget visibility for filtering */
+.widget-card.hidden {
+    display: none;
+}
+
+.widget-card.show {
+    display: flex;
+    animation: fadeInScale 0.3s ease forwards;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+} 
