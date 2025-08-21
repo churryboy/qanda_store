@@ -24,7 +24,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 'math-helper',           // 수학풀이 도우미
                 'math-formula-cards',    // 공식암기 카드
                 'graph-visualizer',      // 그래프 시각화
-                'wrong-answer-generator' // 오답노트 자동 생성기
+                'wrong-answer-generator', // 오답노트 자동 생성기
+                'integral-graph',        // 적분 그래프 시각화
+                'limit-simulator',       // 극한 시뮬레이터
+                'probability-simulator', // 확률 시뮬레이터
+                'normal-distribution',   // 정규분포 계산기
+                'sequence-helper',       // 수열 도우미
+                'set-proposition-quiz',  // 집합 명제 퀴즈
+                'trigonometry-visualizer' // 삼각비 시각화
             ],
             'english': [
                 'english-essay',         // 영어 에세이 첨삭
@@ -45,11 +52,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 'timeline-generator',    // 연표 생성기
                 'concept-comparator',    // 개념 비교표
                 'real-world-connector',  // 현실세계 개념 연동
-                'map-interpreter'        // 지도 해석 훈련
+                'map-interpreter',       // 지도 해석 훈련
+                'person-event-matching', // 인물사건 매칭 퀴즈
+                'historical-source-interpreter', // 사료 해석기
+                'cultural-heritage-guide', // 시대별 문화재 도감
+                'ethics-philosopher-cards', // 윤리 사상가 카드
+                'ideology-comparison',   // 사상 비교표
+                'ethics-dilemma-discussion', // 윤리 딜레마 토론
+                'social-constitution-summary-cards', // 헌법 요약 카드
+                'precedent-learner',     // 판례 학습기
+                'political-system-comparison' // 정치제도 비교표
             ],
             'science': [
                 'law-simulator',         // 법칙 시뮬레이터
-                'virtual-experiment'     // 가상 실험 체험
+                'virtual-experiment',    // 가상 실험 체험
+                'electric-circuit-sim',  // 전기 회로 시뮬레이터
+                'optics-simulator',      // 광학 시뮬레이터
+                'celestial-simulator',   // 천체 시뮬레이터
+                'volcano-simulator',     // 화산 시뮬레이터
+                'mineral-guide',         // 광물 도감
+                'space-exploration-timeline', // 우주 탐사 연대표
+                'cell-3d-viewer',        // 세포 구조 3D 뷰어
+                'human-body-simulator',  // 인체 시스템 시뮬레이터
+                'taxonomy-quiz',         // 계통도 퀴즈
+                'chemical-formula-completer', // 화학식 자동 완성기
+                'periodic-table-explorer' // 주기율표 탐색기
             ],
             'etc': [
                 'conversation-practice', // 친구와 대화 연습하기

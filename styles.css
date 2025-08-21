@@ -420,6 +420,40 @@ body {
 .widget-card:nth-child(40) .widget-icon { background: #5F27CD; } /* 동기부여 메시지 - Purple */
 .widget-card:nth-child(41) .widget-icon { background: #00D2D3; } /* 스트레스 해소 챌린지 - Turquoise */
 
+/* 수학 관련 추가 위젯들 */
+.widget-card:nth-child(42) .widget-icon { background: #FF6B9D; } /* 적분 그래프 시각화 - Pink */
+.widget-card:nth-child(43) .widget-icon { background: #4ECDC4; } /* 극한 시뮬레이터 - Teal */
+.widget-card:nth-child(44) .widget-icon { background: #45B7D1; } /* 확률 시뮬레이터 - Blue */
+.widget-card:nth-child(45) .widget-icon { background: #96CEB4; } /* 정규분포 계산기 - Green */
+.widget-card:nth-child(46) .widget-icon { background: #FFEAA7; color: #2d3436; } /* 수열 도우미 - Yellow */
+.widget-card:nth-child(47) .widget-icon { background: #DDA0DD; } /* 집합 명제 퀴즈 - Plum */
+.widget-card:nth-child(48) .widget-icon { background: #98D8C8; } /* 삼각비 시각화 - Mint */
+
+/* 과학탐구 관련 추가 위젯들 */
+.widget-card:nth-child(49) .widget-icon { background: #F7DC6F; color: #2d3436; } /* 전기 회로 시뮬레이터 - Yellow */
+.widget-card:nth-child(50) .widget-icon { background: #85C1E9; } /* 광학 시뮬레이터 - Light Blue */
+.widget-card:nth-child(51) .widget-icon { background: #F8C471; } /* 천체 시뮬레이터 - Orange */
+.widget-card:nth-child(52) .widget-icon { background: #E74C3C; } /* 화산 시뮬레이터 - Red */
+.widget-card:nth-child(53) .widget-icon { background: #9B59B6; } /* 광물 도감 - Purple */
+.widget-card:nth-child(54) .widget-icon { background: #3498DB; } /* 우주 탐사 연대표 - Blue */
+.widget-card:nth-child(55) .widget-icon { background: #1ABC9C; } /* 세포 구조 3D 뷰어 - Green */
+.widget-card:nth-child(56) .widget-icon { background: #E67E22; } /* 인체 시스템 시뮬레이터 - Orange */
+.widget-card:nth-child(57) .widget-icon { background: #34495E; } /* 계통도 퀴즈 - Dark Blue */
+.widget-card:nth-child(58) .widget-icon { background: #E91E63; } /* 화학식 자동 완성기 - Pink */
+.widget-card:nth-child(59) .widget-icon { background: #607D8B; } /* 주기율표 탐색기 - Blue Grey */
+
+/* 사회탐구 관련 추가 위젯들 */
+.widget-card:nth-child(60) .widget-icon { background: #795548; } /* 연표 생성기 - Brown */
+.widget-card:nth-child(61) .widget-icon { background: #FF9800; } /* 인물사건 매칭 퀴즈 - Orange */
+.widget-card:nth-child(62) .widget-icon { background: #8BC34A; } /* 사료 해석기 - Light Green */
+.widget-card:nth-child(63) .widget-icon { background: #CDDC39; color: #2d3436; } /* 시대별 문화재 도감 - Lime */
+.widget-card:nth-child(64) .widget-icon { background: #9C27B0; } /* 윤리 사상가 카드 - Purple */
+.widget-card:nth-child(65) .widget-icon { background: #3F51B5; } /* 사상 비교표 - Indigo */
+.widget-card:nth-child(66) .widget-icon { background: #2196F3; } /* 윤리 딜레마 토론 - Blue */
+.widget-card:nth-child(67) .widget-icon { background: #4CAF50; } /* 헌법 요약 카드 - Green */
+.widget-card:nth-child(68) .widget-icon { background: #FF5722; } /* 판례 학습기 - Deep Orange */
+.widget-card:nth-child(69) .widget-icon { background: #009688; } /* 정치제도 비교표 - Teal */
+
 .widget-title {
     font-size: 0.8rem;
     font-weight: 600;
