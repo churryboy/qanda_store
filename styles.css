@@ -215,21 +215,30 @@ body {
     margin-bottom: 16px;
 }
 
+/* Widget Grid Layout - Force 3 columns */
 .widgets-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    padding-bottom: 8px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.general-tools-section .widgets-grid {
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 6px;
-    width: 100%;
+    gap: 6px !important;
+    padding-bottom: 8px;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Override any conflicting styles */
+.dashboard-container .general-tools-section .widgets-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+}
+
+/* Specific grid for general tools section */
+.general-tools-section .widgets-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
 }
 
 /* Category-specific Widgets */
@@ -326,8 +335,17 @@ body {
 
 /* Ensure widget cards in grid don't overflow */
 .widgets-grid .widget-card {
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+}
+
+/* Force widget cards to respect grid */
+.general-tools-section .widgets-grid .widget-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
 }
 
 .widget-card::before {
@@ -609,8 +627,15 @@ body {
     }
 
     .widgets-grid {
-        gap: 6px;
-        grid-template-columns: 1fr 1fr 1fr !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
+    }
+    
+    .general-tools-section .widgets-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
     }
 
     .widget-card {

@@ -1,4 +1,14 @@
 // Mobile App Navigation System
+console.log('Script.js loaded');
+
+// Test if functions are accessible globally
+window.addEventListener('load', function() {
+    console.log('Window loaded - checking functions:');
+    console.log('filterWidgetsByCategory exists?', typeof window.filterWidgetsByCategory);
+    console.log('testFilter exists?', typeof window.testFilter);
+    console.log('showAll exists?', typeof window.showAll);
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing app...');
     
@@ -8,15 +18,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const navItems = document.querySelectorAll('.nav-item');
     const bottomNav = document.querySelector('.bottom-nav');
     
+    console.log('=== Initial Element Count ===');
     console.log('Found category cards:', categoryCards.length);
-    console.log('Found widget cards:', widgetCards.length);
+    console.log('Found widget cards (all):', widgetCards.length);
+    console.log('Found widgets in general-tools-section:', document.querySelectorAll('.general-tools-section .widget-card').length);
+    console.log('General tools section exists?', !!document.querySelector('.general-tools-section'));
     
-    // Widget filtering function
-    function filterWidgetsByCategory(category) {
-        console.log('Starting filter for category:', category);
+    // Debug: Show all category data attributes
+    categoryCards.forEach((card, index) => {
+        console.log(`Category card ${index}:`, card.getAttribute('data-category'));
+    });
+    
+    // Widget filtering function - make it globally accessible
+    window.filterWidgetsByCategory = function(category) {
+        console.log('=== filterWidgetsByCategory called ===');
+        console.log('Category:', category);
         
         const allWidgets = document.querySelectorAll('.general-tools-section .widget-card');
         console.log('Found widgets to filter:', allWidgets.length);
+        
+        if (allWidgets.length === 0) {
+            console.error('No widgets found! Check selector: .general-tools-section .widget-card');
+            return;
+        }
         
         // Define specific widgets for each category
         const categoryWidgets = {
@@ -103,20 +127,29 @@ document.addEventListener('DOMContentLoaded', function() {
         let visibleCount = 0;
         let hiddenCount = 0;
         
-        allWidgets.forEach((widget) => {
+        allWidgets.forEach((widget, index) => {
             const widgetPage = widget.getAttribute('data-page');
-            console.log('Checking widget:', widgetPage);
+            const widgetTitle = widget.querySelector('.widget-title')?.textContent;
+            console.log(`Widget ${index}: data-page="${widgetPage}", title="${widgetTitle}"`);
             
             if (targetWidgets.includes(widgetPage)) {
                 // Show widget
-                widget.style.display = '';
+                widget.style.display = 'flex';
                 widget.style.opacity = '1';
+                widget.style.visibility = 'visible';
+                widget.style.position = 'relative';
+                widget.classList.remove('hidden');
+                widget.classList.add('visible');
                 visibleCount++;
                 console.log('✓ Showing widget:', widgetPage);
             } else {
                 // Hide widget
                 widget.style.display = 'none';
                 widget.style.opacity = '0';
+                widget.style.visibility = 'hidden';
+                widget.style.position = 'absolute';
+                widget.classList.add('hidden');
+                widget.classList.remove('visible');
                 hiddenCount++;
                 console.log('✗ Hiding widget:', widgetPage);
             }
@@ -134,15 +167,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const categoryName = categoryNames[category];
         console.log(`Filter complete: ${visibleCount} shown, ${hiddenCount} hidden for ${categoryName}`);
-    }
+    };
     
     // Category click handlers
     categoryCards.forEach((card, index) => {
-        console.log(`Setting up category card ${index}:`, card.getAttribute('data-category'));
+        const dataCategory = card.getAttribute('data-category');
+        console.log(`Setting up category card ${index}: data-category="${dataCategory}"`);
         
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('=== Category Card Clicked ===');
             const categoryId = this.getAttribute('data-category');
-            console.log('Category clicked:', categoryId);
+            console.log('Category ID:', categoryId);
+            console.log('This element:', this);
             
             // Add haptic feedback
             if (navigator.vibrate) {
@@ -150,13 +189,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Filter widgets in the main section
-            filterWidgetsByCategory(categoryId);
+            console.log('About to call filterWidgetsByCategory with:', categoryId);
+            try {
+                window.filterWidgetsByCategory(categoryId);
+            } catch (error) {
+                console.error('Error calling filterWidgetsByCategory:', error);
+            }
             
             // Scroll to widgets section
             const widgetsSection = document.querySelector('.general-tools-section');
             if (widgetsSection) {
                 widgetsSection.scrollIntoView({ behavior: 'smooth' });
             }
+            
+            // Mark this category as active
+            categoryCards.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
             
             // Add click animation
             this.style.transform = 'scale(0.95)';
@@ -234,8 +282,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function showAllWidgets() {
         const allWidgets = document.querySelectorAll('.general-tools-section .widget-card');
         allWidgets.forEach((widget) => {
-            widget.style.display = '';
+            widget.style.display = 'flex';
             widget.style.opacity = '1';
+            widget.style.visibility = 'visible';
+            widget.style.position = 'relative';
+            widget.classList.remove('hidden');
+            widget.classList.add('visible');
         });
         console.log('All widgets shown');
     }
@@ -250,9 +302,24 @@ document.addEventListener('DOMContentLoaded', function() {
         showAllWidgets();
     };
     
-    // Initialize with all widgets visible
+
+    
+    // Initialize with all widgets hidden
+    function hideAllWidgets() {
+        const allWidgets = document.querySelectorAll('.general-tools-section .widget-card');
+        allWidgets.forEach((widget) => {
+            widget.style.display = 'none';
+            widget.style.opacity = '0';
+            widget.style.visibility = 'hidden';
+            widget.style.position = 'absolute';
+            widget.classList.add('hidden');
+            widget.classList.remove('visible');
+        });
+        console.log('All widgets hidden on initial load');
+    }
+    
     setTimeout(() => {
-        showAllWidgets();
+        hideAllWidgets();
     }, 500);
 });
 

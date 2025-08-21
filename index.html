@@ -7,6 +7,65 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Force 3-column grid layout */
+        .widgets-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 6px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Ensure proper grid behavior */
+        .general-tools-section .widgets-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(60px, 1fr)) !important;
+            gap: 6px !important;
+            width: 100% !important;
+        }
+        
+        /* Widget card sizing */
+        .widgets-grid .widget-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+            /* Hide widgets by default */
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        /* Remove any flex properties that might interfere */
+        .widget-card {
+            display: flex !important;
+            flex-direction: column !important;
+            width: 100% !important;
+        }
+        
+        /* For mobile screens */
+        @media (max-width: 480px) {
+            .widgets-grid {
+                grid-template-columns: repeat(3, minmax(50px, 1fr)) !important;
+            }
+        }
+        
+        /* Hidden class for filtering */
+        .widget-card.hidden {
+            display: none !important;
+            visibility: hidden !important;
+            position: absolute !important;
+            opacity: 0 !important;
+        }
+        
+        .widget-card.visible {
+            display: flex !important;
+            visibility: visible !important;
+            position: relative !important;
+            opacity: 1 !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -413,11 +472,15 @@
                         <h3 class="widget-title">스트레스 해소 챌린지</h3>
                         <p class="widget-description">마음 안정 활동</p>
                     </div>
-                </div>
-            </section>
 
-            <!-- Category-specific Widgets (Hidden by default) -->
-
+                    <!-- 수학 관련 추가 위젯 -->
+                    <div class="widget-card" data-page="integral-graph" data-category="math">
+                        <div class="widget-icon">
+                            <i class="fas fa-chart-area"></i>
+                        </div>
+                        <h3 class="widget-title">적분 그래프 시각화</h3>
+                        <p class="widget-description">적분 함수 그래프 그리기</p>
+                    </div>
 
                     <div class="widget-card" data-page="limit-simulator" data-category="math">
                         <div class="widget-icon">
