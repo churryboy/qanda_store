@@ -81,7 +81,6 @@ body {
     gap: 8px;
 }
 
-.notification-btn,
 .profile-btn {
     background: rgba(255, 85, 0, 0.1);
     border: none;
@@ -98,26 +97,9 @@ body {
     position: relative;
 }
 
-.notification-btn:hover,
 .profile-btn:hover {
     background: rgba(255, 85, 0, 0.2);
     color: #FF5500;
-}
-
-.notification-badge {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    background: #FF5500;
-    color: white;
-    font-size: 0.6rem;
-    font-weight: 600;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* Dashboard */
@@ -322,6 +304,8 @@ body {
     justify-content: center;
     align-items: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: none;
 }
 
 .widget-card::before {

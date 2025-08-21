@@ -133,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         const categoryName = categoryNames[category];
-        showNotification(`${categoryName} 관련 도구 ${visibleCount}개를 표시합니다.`, 'info');
         console.log(`Filter complete: ${visibleCount} shown, ${hiddenCount} hidden for ${categoryName}`);
     }
     
@@ -184,8 +183,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.transform = '';
             }, 150);
             
-            // Show notification
-            showNotification(`${title} 기능을 실행합니다.`, 'info');
+            // Log action
+            console.log(`${title} 기능을 실행합니다.`);
         });
     });
     
@@ -217,16 +216,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 break;
             case '#search':
-                showNotification('검색 기능을 준비 중입니다.', 'info');
+                console.log('검색 기능을 준비 중입니다.');
                 break;
             case '#add':
-                showNotification('추가 기능을 준비 중입니다.', 'info');
+                console.log('추가 기능을 준비 중입니다.');
                 break;
             case '#notifications':
-                showNotification('알림 기능을 준비 중입니다.', 'info');
+                console.log('알림 기능을 준비 중입니다.');
                 break;
             case '#profile':
-                showNotification('프로필 페이지를 여는 중...', 'info');
+                console.log('프로필 페이지를 여는 중...');
                 break;
         }
     }
@@ -257,53 +256,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500);
 });
 
-// Notification system
-function showNotification(message, type = 'info') {
-    // Remove existing notifications
-    const existingNotifications = document.querySelectorAll('.toast-notification');
-    existingNotifications.forEach(notification => notification.remove());
-    
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `toast-notification toast-${type}`;
-    notification.innerHTML = `
-        <div class="toast-content">
-            <div class="toast-icon">
-                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation' : 'info'}"></i>
-            </div>
-            <span class="toast-message">${message}</span>
-        </div>
-    `;
-    
-    // Add styles
-    notification.style.cssText = `
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        background: #ffffff;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        border-radius: 12px;
-        padding: 12px 16px;
-        z-index: 4000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        max-width: 300px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    `;
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Animate in
-    setTimeout(() => {
-        notification.style.transform = 'translateX(0)';
-    }, 100);
-    
-    // Auto remove after 3 seconds
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.style.transform = 'translateX(100%)';
-            setTimeout(() => notification.remove(), 300);
-        }
-    }, 3000);
-} 
+ 
