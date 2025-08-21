@@ -203,6 +203,10 @@ body {
 /* General Tools Section */
 .general-tools-section {
     margin-bottom: 24px;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Widgets Section */
@@ -213,9 +217,18 @@ body {
 
 .widgets-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 6px;
     padding-bottom: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.general-tools-section .widgets-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px;
     width: 100%;
 }
 
@@ -308,6 +321,13 @@ body {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    margin: 0;
+}
+
+/* Ensure widget cards in grid don't overflow */
+.widgets-grid .widget-card {
+    width: 100%;
+    max-width: 100%;
 }
 
 .widget-card::before {
@@ -590,11 +610,12 @@ body {
 
     .widgets-grid {
         gap: 6px;
+        grid-template-columns: 1fr 1fr 1fr !important;
     }
 
     .widget-card {
-        padding: 10px;
-        min-height: 90px;
+        padding: 8px 6px;
+        min-height: 80px;
     }
 
     .widget-icon {

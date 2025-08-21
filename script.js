@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (targetWidgets.includes(widgetPage)) {
                 // Show widget
-                widget.style.display = 'flex';
+                widget.style.display = '';
                 widget.style.opacity = '1';
                 visibleCount++;
                 console.log('✓ Showing widget:', widgetPage);
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showAllWidgets() {
         const allWidgets = document.querySelectorAll('.general-tools-section .widget-card');
         allWidgets.forEach((widget) => {
-            widget.style.display = 'flex';
+            widget.style.display = '';
             widget.style.opacity = '1';
         });
         console.log('All widgets shown');
