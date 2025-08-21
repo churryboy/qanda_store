@@ -35,6 +35,9 @@
             display: none;
             opacity: 0;
             visibility: hidden;
+            /* Adjust height for no description */
+            min-height: 70px !important;
+            padding: 8px 4px !important;
         }
         
         /* Remove any flex properties that might interfere */
@@ -42,6 +45,13 @@
             display: flex !important;
             flex-direction: column !important;
             width: 100% !important;
+        }
+        
+        /* Adjust widget title for no description */
+        .widget-title {
+            font-size: 0.8rem !important;
+            margin-bottom: 0 !important;
+            text-align: center !important;
         }
         
         /* For mobile screens */
@@ -64,6 +74,172 @@
             visibility: visible !important;
             position: relative !important;
             opacity: 1 !important;
+        }
+
+        /* Survey Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 5000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-container {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h3 {
+            color: #333;
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .modal-content {
+            padding: 24px;
+        }
+
+        .widget-description {
+            margin-bottom: 24px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #FF5500;
+        }
+
+        .widget-description p {
+            color: #333;
+            line-height: 1.8;
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .survey-section {
+            margin-bottom: 24px;
+        }
+
+        .survey-section h4 {
+            color: #333;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .radio-group label:hover {
+            background: #e9ecef;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #FF5500;
+        }
+
+        .radio-group label:has(input:checked) {
+            background: rgba(255, 85, 0, 0.1);
+            border: 2px solid #FF5500;
+            color: #FF5500;
+            font-weight: 500;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .submit-survey, .cancel-survey {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .submit-survey {
+            background: #FF5500;
+            color: white;
+        }
+
+        .submit-survey:hover {
+            background: #e64a00;
+        }
+
+        .cancel-survey {
+            background: #f8f9fa;
+            color: #666;
+        }
+
+        .cancel-survey:hover {
+            background: #e9ecef;
+            color: #333;
         }
     </style>
 </head>
@@ -144,7 +320,6 @@
                             <i class="fas fa-file-alt"></i>
                         </div>
                         <h3 class="widget-title">시험 요약봇</h3>
-                        <p class="widget-description">핵심 내용 정리</p>
                     </div>
 
                     <div class="widget-card" data-page="english-essay" data-category="english">
@@ -152,7 +327,6 @@
                             <i class="fas fa-pen-fancy"></i>
                         </div>
                         <h3 class="widget-title">영어 에세이 첨삭</h3>
-                        <p class="widget-description">문법과 표현 개선</p>
                     </div>
 
                     <div class="widget-card" data-page="math-helper" data-category="math">
@@ -160,7 +334,6 @@
                             <i class="fas fa-calculator"></i>
                         </div>
                         <h3 class="widget-title">수학풀이 도우미</h3>
-                        <p class="widget-description">단계별 풀이 과정</p>
                     </div>
 
                     <div class="widget-card" data-page="flashcard" data-category="general">
@@ -168,7 +341,6 @@
                             <i class="fas fa-clone"></i>
                         </div>
                         <h3 class="widget-title">암기 카드 만들기</h3>
-                        <p class="widget-description">효과적인 암기 학습</p>
                     </div>
 
                     <div class="widget-card" data-page="club-report" data-category="general">
@@ -176,7 +348,6 @@
                             <i class="fas fa-users"></i>
                         </div>
                         <h3 class="widget-title">동아리 보고서 초안</h3>
-                        <p class="widget-description">활동 보고서 작성</p>
                     </div>
 
                     <div class="widget-card" data-page="personal-statement" data-category="general">
@@ -184,7 +355,6 @@
                             <i class="fas fa-user-edit"></i>
                         </div>
                         <h3 class="widget-title">자소서 보고서 초안</h3>
-                        <p class="widget-description">자기소개서 작성</p>
                     </div>
 
                     <div class="widget-card" data-page="interview-practice" data-category="general">
@@ -192,7 +362,6 @@
                             <i class="fas fa-microphone"></i>
                         </div>
                         <h3 class="widget-title">면접 질문 연습</h3>
-                        <p class="widget-description">면접 대비 훈련</p>
                     </div>
 
                     <div class="widget-card" data-page="career-explorer" data-category="general">
@@ -200,7 +369,6 @@
                             <i class="fas fa-compass"></i>
                         </div>
                         <h3 class="widget-title">진로 탐색 도우미</h3>
-                        <p class="widget-description">미래 직업 찾기</p>
                     </div>
 
                     <div class="widget-card" data-page="class-notice" data-category="general">
@@ -208,7 +376,6 @@
                             <i class="fas fa-bullhorn"></i>
                         </div>
                         <h3 class="widget-title">학급 공지 요약</h3>
-                        <p class="widget-description">중요 공지 정리</p>
                     </div>
 
                     <div class="widget-card" data-page="conversation-practice" data-category="etc">
@@ -216,7 +383,6 @@
                             <i class="fas fa-comments"></i>
                         </div>
                         <h3 class="widget-title">친구와 대화 연습하기</h3>
-                        <p class="widget-description">소통 능력 향상</p>
                     </div>
 
                     <div class="widget-card" data-page="study-scheduler" data-category="general">
@@ -224,7 +390,6 @@
                             <i class="fas fa-calendar-alt"></i>
                         </div>
                         <h3 class="widget-title">학습 스케줄러</h3>
-                        <p class="widget-description">공부 계획 관리</p>
                     </div>
 
                     <div class="widget-card" data-page="mental-care" data-category="etc">
@@ -232,7 +397,6 @@
                             <i class="fas fa-heart"></i>
                         </div>
                         <h3 class="widget-title">멘탈케어 위젯</h3>
-                        <p class="widget-description">마음 건강 관리</p>
                     </div>
 
                     <div class="widget-card" data-page="webtoon-ideas" data-category="etc">
@@ -240,7 +404,6 @@
                             <i class="fas fa-palette"></i>
                         </div>
                         <h3 class="widget-title">웹툰 아이디어 봇</h3>
-                        <p class="widget-description">창작 아이디어 생성</p>
                     </div>
 
                     <div class="widget-card" data-page="video-script" data-category="etc">
@@ -248,7 +411,6 @@
                             <i class="fas fa-video"></i>
                         </div>
                         <h3 class="widget-title">영상 시나리오 작성기</h3>
-                        <p class="widget-description">영상 대본 작성</p>
                     </div>
 
                     <div class="widget-card" data-page="rap-lyrics" data-category="etc">
@@ -256,7 +418,6 @@
                             <i class="fas fa-music"></i>
                         </div>
                         <h3 class="widget-title">랩 가사 도우미</h3>
-                        <p class="widget-description">랩 가사 창작 지원</p>
                     </div>
 
                     <div class="widget-card" data-page="art-design" data-category="etc">
@@ -264,7 +425,6 @@
                             <i class="fas fa-paint-brush"></i>
                         </div>
                         <h3 class="widget-title">그림 디자인 봇</h3>
-                        <p class="widget-description">디자인 아이디어 제안</p>
                     </div>
 
                     <div class="widget-card" data-page="school-record" data-category="general">
@@ -272,7 +432,6 @@
                             <i class="fas fa-graduation-cap"></i>
                         </div>
                         <h3 class="widget-title">생기부 도우미</h3>
-                        <p class="widget-description">생활기록부 관리</p>
                     </div>
 
                     <div class="widget-card" data-page="performance-assessment" data-category="general">
@@ -280,7 +439,6 @@
                             <i class="fas fa-tasks"></i>
                         </div>
                         <h3 class="widget-title">수행평가 봇</h3>
-                        <p class="widget-description">과제 수행 지원</p>
                     </div>
 
                     <!-- 수학 관련 추가 위젯 -->
@@ -289,7 +447,6 @@
                             <i class="fas fa-square-root-alt"></i>
                         </div>
                         <h3 class="widget-title">공식암기 카드</h3>
-                        <p class="widget-description">수학 공식 암기 도구</p>
                     </div>
 
                     <div class="widget-card" data-page="graph-visualizer" data-category="math">
@@ -297,7 +454,6 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <h3 class="widget-title">그래프 시각화</h3>
-                        <p class="widget-description">함수 그래프 그리기</p>
                     </div>
 
                     <div class="widget-card" data-page="wrong-answer-generator" data-category="math">
@@ -305,7 +461,6 @@
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
                         <h3 class="widget-title">오답노트 자동 생성기</h3>
-                        <p class="widget-description">틀린 문제 정리</p>
                     </div>
 
                     <!-- 영어 관련 추가 위젯 -->
@@ -314,7 +469,6 @@
                             <i class="fas fa-pen-nib"></i>
                         </div>
                         <h3 class="widget-title">에세이 첨삭 도우미</h3>
-                        <p class="widget-description">영어 글쓰기 개선</p>
                     </div>
 
                     <div class="widget-card" data-page="pronunciation-trainer" data-category="english">
@@ -322,7 +476,6 @@
                             <i class="fas fa-volume-up"></i>
                         </div>
                         <h3 class="widget-title">발음 교정기</h3>
-                        <p class="widget-description">정확한 발음 연습</p>
                     </div>
 
                     <div class="widget-card" data-page="reading-summarizer" data-category="english">
@@ -330,7 +483,6 @@
                             <i class="fas fa-book-reader"></i>
                         </div>
                         <h3 class="widget-title">독해 요약 훈련</h3>
-                        <p class="widget-description">영어 지문 요약</p>
                     </div>
 
                     <div class="widget-card" data-page="conversation-chatbot" data-category="english">
@@ -338,7 +490,6 @@
                             <i class="fas fa-robot"></i>
                         </div>
                         <h3 class="widget-title">영어 회화 챗봇</h3>
-                        <p class="widget-description">AI와 영어 대화</p>
                     </div>
 
                     <!-- 국어 관련 추가 위젯 -->
@@ -347,7 +498,6 @@
                             <i class="fas fa-file-text"></i>
                         </div>
                         <h3 class="widget-title">비문학 지문 요약기</h3>
-                        <p class="widget-description">긴 지문 핵심 정리</p>
                     </div>
 
                     <div class="widget-card" data-page="literature-analyzer" data-category="korean">
@@ -355,7 +505,6 @@
                             <i class="fas fa-theater-masks"></i>
                         </div>
                         <h3 class="widget-title">문학작품 해석</h3>
-                        <p class="widget-description">작품 분석 도우미</p>
                     </div>
 
                     <div class="widget-card" data-page="vocabulary-cards" data-category="korean">
@@ -363,7 +512,6 @@
                             <i class="fas fa-spell-check"></i>
                         </div>
                         <h3 class="widget-title">어휘 학습 카드</h3>
-                        <p class="widget-description">국어 어휘력 향상</p>
                     </div>
 
                     <div class="widget-card" data-page="writing-corrector" data-category="korean">
@@ -371,7 +519,6 @@
                             <i class="fas fa-edit"></i>
                         </div>
                         <h3 class="widget-title">작문 첨삭</h3>
-                        <p class="widget-description">글쓰기 실력 향상</p>
                     </div>
 
                     <div class="widget-card" data-page="classical-literature" data-category="korean">
@@ -379,7 +526,6 @@
                             <i class="fas fa-scroll"></i>
                         </div>
                         <h3 class="widget-title">고전 문학 풀이</h3>
-                        <p class="widget-description">고전 작품 해석</p>
                     </div>
 
                     <div class="widget-card" data-page="sentence-analyzer" data-category="korean">
@@ -387,7 +533,6 @@
                             <i class="fas fa-search-plus"></i>
                         </div>
                         <h3 class="widget-title">구문 분석기</h3>
-                        <p class="widget-description">문장 구조 분석</p>
                     </div>
 
                     <!-- 사탐 관련 추가 위젯 -->
@@ -396,7 +541,6 @@
                             <i class="fas fa-history"></i>
                         </div>
                         <h3 class="widget-title">연표 생성기</h3>
-                        <p class="widget-description">역사 연표 제작</p>
                     </div>
 
                     <div class="widget-card" data-page="concept-comparator" data-category="social">
@@ -404,7 +548,6 @@
                             <i class="fas fa-balance-scale"></i>
                         </div>
                         <h3 class="widget-title">개념 비교표</h3>
-                        <p class="widget-description">개념 간 비교 분석</p>
                     </div>
 
                     <div class="widget-card" data-page="real-world-connector" data-category="social">
@@ -412,7 +555,6 @@
                             <i class="fas fa-link"></i>
                         </div>
                         <h3 class="widget-title">현실세계 개념 연동</h3>
-                        <p class="widget-description">이론과 현실 연결</p>
                     </div>
 
                     <div class="widget-card" data-page="map-interpreter" data-category="social">
@@ -420,7 +562,6 @@
                             <i class="fas fa-map-marked-alt"></i>
                         </div>
                         <h3 class="widget-title">지도 해석 훈련</h3>
-                        <p class="widget-description">지리 지도 분석</p>
                     </div>
 
                     <!-- 과탐 관련 추가 위젯 -->
@@ -429,7 +570,6 @@
                             <i class="fas fa-atom"></i>
                         </div>
                         <h3 class="widget-title">법칙 시뮬레이터</h3>
-                        <p class="widget-description">과학 법칙 시뮬레이션</p>
                     </div>
 
                     <div class="widget-card" data-page="virtual-experiment" data-category="science">
@@ -437,7 +577,6 @@
                             <i class="fas fa-vial"></i>
                         </div>
                         <h3 class="widget-title">가상 실험 체험</h3>
-                        <p class="widget-description">온라인 실험실</p>
                     </div>
 
                     <!-- 기타 관련 추가 위젯 -->
@@ -446,7 +585,6 @@
                             <i class="fas fa-birthday-cake"></i>
                         </div>
                         <h3 class="widget-title">친구 생일 알림</h3>
-                        <p class="widget-description">생일 챙기기 도우미</p>
                     </div>
 
                     <div class="widget-card" data-page="emotion-diary" data-category="etc">
@@ -454,7 +592,6 @@
                             <i class="fas fa-smile"></i>
                         </div>
                         <h3 class="widget-title">감정기록 다이어리</h3>
-                        <p class="widget-description">감정 상태 기록</p>
                     </div>
 
                     <div class="widget-card" data-page="motivation-messages" data-category="etc">
@@ -462,7 +599,6 @@
                             <i class="fas fa-fire"></i>
                         </div>
                         <h3 class="widget-title">동기부여 메시지</h3>
-                        <p class="widget-description">매일 격려 메시지</p>
                     </div>
 
                     <div class="widget-card" data-page="stress-relief" data-category="etc">
@@ -470,7 +606,6 @@
                             <i class="fas fa-leaf"></i>
                         </div>
                         <h3 class="widget-title">스트레스 해소 챌린지</h3>
-                        <p class="widget-description">마음 안정 활동</p>
                     </div>
 
                     <!-- 수학 관련 추가 위젯 -->
@@ -479,7 +614,6 @@
                             <i class="fas fa-chart-area"></i>
                         </div>
                         <h3 class="widget-title">적분 그래프 시각화</h3>
-                        <p class="widget-description">적분 함수 그래프 그리기</p>
                     </div>
 
                     <div class="widget-card" data-page="limit-simulator" data-category="math">
@@ -487,7 +621,6 @@
                             <i class="fas fa-arrows-alt-h"></i>
                         </div>
                         <h3 class="widget-title">극한 시뮬레이터</h3>
-                        <p class="widget-description">극한값 계산 시뮬레이션</p>
                     </div>
 
                     <div class="widget-card" data-page="probability-simulator" data-category="math">
@@ -495,7 +628,6 @@
                             <i class="fas fa-dice"></i>
                         </div>
                         <h3 class="widget-title">확률 시뮬레이터</h3>
-                        <p class="widget-description">확률 계산 및 시뮬레이션</p>
                     </div>
 
                     <div class="widget-card" data-page="normal-distribution" data-category="math">
@@ -503,7 +635,6 @@
                             <i class="fas fa-bell"></i>
                         </div>
                         <h3 class="widget-title">정규분포 계산기</h3>
-                        <p class="widget-description">정규분포 확률 계산</p>
                     </div>
 
                     <div class="widget-card" data-page="sequence-helper" data-category="math">
@@ -511,7 +642,6 @@
                             <i class="fas fa-sort-numeric-up"></i>
                         </div>
                         <h3 class="widget-title">수열 도우미</h3>
-                        <p class="widget-description">수열 패턴 분석</p>
                     </div>
 
                     <div class="widget-card" data-page="set-proposition-quiz" data-category="math">
@@ -519,7 +649,6 @@
                             <i class="fas fa-puzzle-piece"></i>
                         </div>
                         <h3 class="widget-title">집합 명제 퀴즈</h3>
-                        <p class="widget-description">집합과 명제 문제</p>
                     </div>
 
                     <div class="widget-card" data-page="trigonometry-visualizer" data-category="math">
@@ -527,7 +656,6 @@
                             <i class="fas fa-circle"></i>
                         </div>
                         <h3 class="widget-title">삼각비 시각화</h3>
-                        <p class="widget-description">삼각함수 시각화</p>
                     </div>
 
                     <!-- 과학탐구 관련 추가 위젯 -->
@@ -536,7 +664,6 @@
                             <i class="fas fa-bolt"></i>
                         </div>
                         <h3 class="widget-title">전기 회로 시뮬레이터</h3>
-                        <p class="widget-description">전기 회로 시뮬레이션</p>
                     </div>
 
                     <div class="widget-card" data-page="optics-simulator" data-category="science">
@@ -544,7 +671,6 @@
                             <i class="fas fa-eye"></i>
                         </div>
                         <h3 class="widget-title">광학 시뮬레이터</h3>
-                        <p class="widget-description">빛의 반사와 굴절</p>
                     </div>
 
                     <div class="widget-card" data-page="celestial-simulator" data-category="science">
@@ -552,7 +678,6 @@
                             <i class="fas fa-star"></i>
                         </div>
                         <h3 class="widget-title">천체 시뮬레이터</h3>
-                        <p class="widget-description">천체 운동 시뮬레이션</p>
                     </div>
 
                     <div class="widget-card" data-page="volcano-simulator" data-category="science">
@@ -560,7 +685,6 @@
                             <i class="fas fa-fire"></i>
                         </div>
                         <h3 class="widget-title">화산 시뮬레이터</h3>
-                        <p class="widget-description">화산 활동 시뮬레이션</p>
                     </div>
 
                     <div class="widget-card" data-page="mineral-guide" data-category="science">
@@ -568,7 +692,6 @@
                             <i class="fas fa-gem"></i>
                         </div>
                         <h3 class="widget-title">광물 도감</h3>
-                        <p class="widget-description">광물 분류 및 특성</p>
                     </div>
 
                     <div class="widget-card" data-page="space-exploration-timeline" data-category="science">
@@ -576,7 +699,6 @@
                             <i class="fas fa-rocket"></i>
                         </div>
                         <h3 class="widget-title">우주 탐사 연대표</h3>
-                        <p class="widget-description">우주 탐사 역사</p>
                     </div>
 
                     <div class="widget-card" data-page="cell-3d-viewer" data-category="science">
@@ -584,7 +706,6 @@
                             <i class="fas fa-cube"></i>
                         </div>
                         <h3 class="widget-title">세포 구조 3D 뷰어</h3>
-                        <p class="widget-description">세포 구조 3D 시각화</p>
                     </div>
 
                     <div class="widget-card" data-page="human-body-simulator" data-category="science">
@@ -592,7 +713,6 @@
                             <i class="fas fa-user-md"></i>
                         </div>
                         <h3 class="widget-title">인체 시스템 시뮬레이터</h3>
-                        <p class="widget-description">인체 기관 시스템</p>
                     </div>
 
                     <div class="widget-card" data-page="taxonomy-quiz" data-category="science">
@@ -600,7 +720,6 @@
                             <i class="fas fa-sitemap"></i>
                         </div>
                         <h3 class="widget-title">계통도 퀴즈</h3>
-                        <p class="widget-description">생물 분류 체계</p>
                     </div>
 
                     <div class="widget-card" data-page="chemical-formula-completer" data-category="science">
@@ -608,7 +727,6 @@
                             <i class="fas fa-flask"></i>
                         </div>
                         <h3 class="widget-title">화학식 자동 완성기</h3>
-                        <p class="widget-description">화학식 균형 맞추기</p>
                     </div>
 
                     <div class="widget-card" data-page="periodic-table-explorer" data-category="science">
@@ -616,7 +734,6 @@
                             <i class="fas fa-table"></i>
                         </div>
                         <h3 class="widget-title">주기율표 탐색기</h3>
-                        <p class="widget-description">원소 주기율표 탐색</p>
                     </div>
 
                     <!-- 사회탐구 관련 추가 위젯 -->
@@ -625,7 +742,6 @@
                             <i class="fas fa-clock"></i>
                         </div>
                         <h3 class="widget-title">연표 생성기</h3>
-                        <p class="widget-description">역사 연표 자동 생성</p>
                     </div>
 
                     <div class="widget-card" data-page="person-event-matching" data-category="social">
@@ -633,7 +749,6 @@
                             <i class="fas fa-link"></i>
                         </div>
                         <h3 class="widget-title">인물사건 매칭 퀴즈</h3>
-                        <p class="widget-description">인물과 사건 연결</p>
                     </div>
 
                     <div class="widget-card" data-page="historical-source-interpreter" data-category="social">
@@ -641,7 +756,6 @@
                             <i class="fas fa-scroll"></i>
                         </div>
                         <h3 class="widget-title">사료 해석기</h3>
-                        <p class="widget-description">역사 사료 분석</p>
                     </div>
 
                     <div class="widget-card" data-page="cultural-heritage-guide" data-category="social">
@@ -649,7 +763,6 @@
                             <i class="fas fa-landmark"></i>
                         </div>
                         <h3 class="widget-title">시대별 문화재 도감</h3>
-                        <p class="widget-description">문화재 시대별 분류</p>
                     </div>
 
                     <div class="widget-card" data-page="ethics-philosopher-cards" data-category="social">
@@ -657,7 +770,6 @@
                             <i class="fas fa-brain"></i>
                         </div>
                         <h3 class="widget-title">윤리 사상가 카드</h3>
-                        <p class="widget-description">윤리 사상가 소개</p>
                     </div>
 
                     <div class="widget-card" data-page="ideology-comparison" data-category="social">
@@ -665,7 +777,6 @@
                             <i class="fas fa-balance-scale"></i>
                         </div>
                         <h3 class="widget-title">사상 비교표</h3>
-                        <p class="widget-description">다양한 사상 비교</p>
                     </div>
 
                     <div class="widget-card" data-page="ethics-dilemma-discussion" data-category="social">
@@ -673,7 +784,6 @@
                             <i class="fas fa-comments"></i>
                         </div>
                         <h3 class="widget-title">윤리 딜레마 토론</h3>
-                        <p class="widget-description">윤리적 문제 토론</p>
                     </div>
 
                     <div class="widget-card" data-page="social-constitution-summary-cards" data-category="social">
@@ -681,7 +791,6 @@
                             <i class="fas fa-gavel"></i>
                         </div>
                         <h3 class="widget-title">헌법 요약 카드</h3>
-                        <p class="widget-description">헌법 조항 요약</p>
                     </div>
 
                     <div class="widget-card" data-page="precedent-learner" data-category="social">
@@ -689,7 +798,6 @@
                             <i class="fas fa-balance-scale"></i>
                         </div>
                         <h3 class="widget-title">판례 학습기</h3>
-                        <p class="widget-description">중요 판례 학습</p>
                     </div>
 
                     <div class="widget-card" data-page="political-system-comparison" data-category="social">
@@ -697,12 +805,63 @@
                             <i class="fas fa-vote-yea"></i>
                         </div>
                         <h3 class="widget-title">정치제도 비교표</h3>
-                        <p class="widget-description">정치제도 비교 분석</p>
                     </div>
                 </div>
             </section>
         </div>
     </main>
+
+    <!-- Survey Modal -->
+    <div id="survey-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="modal-widget-title">위젯 이름</h3>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="widget-description">
+                    <p id="modal-widget-description">위젯에 대한 자세한 설명이 여기에 표시됩니다.</p>
+                </div>
+                
+                <div class="survey-section">
+                    <h4>이 기능 만약 사용한다면, 얼마나 자주 쓸까요?</h4>
+                    <div class="radio-group" data-question="frequency">
+                        <label><input type="radio" name="frequency" value="1"> 2~3일에 한번은 쓸 것 같아요</label>
+                        <label><input type="radio" name="frequency" value="2"> 일주일에 한번은 쓸 것 같아요</label>
+                        <label><input type="radio" name="frequency" value="3"> 2~3주에 한번은 쓸 것 같아요</label>
+                        <label><input type="radio" name="frequency" value="4"> 1달에 한번 정도 쓸 것 같아요</label>
+                        <label><input type="radio" name="frequency" value="5"> 한 학기에 한번 정도 쓸 것 같아요</label>
+                        <label><input type="radio" name="frequency" value="6"> 이 기능은 안 쓸것 같아요</label>
+                    </div>
+                </div>
+
+                <div class="survey-section">
+                    <h4>이 기능 만약 사용한다면, 얼마나 도움이 될까요?</h4>
+                    <div class="radio-group" data-question="helpfulness">
+                        <label><input type="radio" name="helpfulness" value="1"> 엄청나게 큰 도움이 될 것 같아요</label>
+                        <label><input type="radio" name="helpfulness" value="2"> 약간 도움이 될 것 같아요</label>
+                        <label><input type="radio" name="helpfulness" value="3"> 크게 도움이 될 것 같진 않아요</label>
+                        <label><input type="radio" name="helpfulness" value="4"> 전혀 필요 없는 기능 같아요</label>
+                    </div>
+                </div>
+
+                <div class="survey-section">
+                    <h4>이런 기능이 있었으면 좋겠다고 평소에 생각 했었나요?</h4>
+                    <div class="radio-group" data-question="need">
+                        <label><input type="radio" name="need" value="1"> 완전 간절히 생각했어요</label>
+                        <label><input type="radio" name="need" value="2"> 한번쯤 생각해본적은 있었던 것 같아요</label>
+                        <label><input type="radio" name="need" value="3"> 크게 평소에 생각은 안해봤었어요</label>
+                        <label><input type="radio" name="need" value="4"> 전혀 필요를 느낀 적은 없습니다</label>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="submit-survey" id="submit-survey">설문 완료</button>
+                    <button class="cancel-survey" id="cancel-survey">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
