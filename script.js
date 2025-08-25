@@ -469,9 +469,9 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
     
     console.log('📋 Including userId in welcome data:', userId);
     
-    // UPDATED Google Apps Script URL (with cache busting)
+    // UPDATED Google Apps Script URL (with cache busting) - Enhanced debugging version
     const cacheBuster = Date.now();
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz75YD8cilNkOXA3HA4lEBvESRMrEZfU7X9XL0jv6-gWF1Me5yzkx6l_ww-VhlA0j_MmA/exec?cb=' + cacheBuster;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzivhDC5eRan0prmQX_wZRa3Kn_21-hT92SZvy6eVxDph90FCrLkIybRmY-nMO_f-785Q/exec?cb=' + cacheBuster;
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
@@ -544,9 +544,9 @@ function sendSurveyToGoogleSheets(surveyData) {
     
     console.log('📋 Including userId in survey data:', userId);
     
-    // UPDATED Google Apps Script URL (with cache busting)
+    // UPDATED Google Apps Script URL (with cache busting) - Enhanced debugging version  
     const cacheBuster = Date.now();
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz75YD8cilNkOXA3HA4lEBvESRMrEZfU7X9XL0jv6-gWF1Me5yzkx6l_ww-VhlA0j_MmA/exec?cb=' + cacheBuster;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzivhDC5eRan0prmQX_wZRa3Kn_21-hT92SZvy6eVxDph90FCrLkIybRmY-nMO_f-785Q/exec?cb=' + cacheBuster;
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
