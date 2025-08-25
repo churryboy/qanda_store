@@ -1057,9 +1057,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Send to Google Sheets
         sendSurveyToGoogleSheets(surveyData);
         
-        // Show thank you message
-        alert('설문에 참여해주셔서 감사합니다! 소중한 의견이 반영될 예정입니다.');
-        
+        // Close modal immediately without showing thank you message
         closeSurveyModal();
     }
     
