@@ -1,3 +1,126 @@
+// User Session Management System
+class UserSession {
+    constructor() {
+        this.userData = null;
+        this.sessionKey = 'qanda_user_session';
+        this.init();
+    }
+    
+    init() {
+        // Load user data from localStorage on page load
+        this.loadUserData();
+        console.log('🔧 UserSession initialized:', this.userData);
+    }
+    
+    setUser(name, grade) {
+        this.userData = {
+            name: name,
+            grade: grade,
+            timestamp: new Date().toISOString(),
+            sessionId: this.generateSessionId()
+        };
+        
+        // Store in multiple places for redundancy
+        localStorage.setItem(this.sessionKey, JSON.stringify(this.userData));
+        localStorage.setItem('userName', name);
+        localStorage.setItem('userGrade', grade);
+        localStorage.setItem('hasVisited', 'true');
+        
+        console.log('👤 User session created:', this.userData);
+        console.log('💾 Stored in localStorage:', {
+            sessionData: localStorage.getItem(this.sessionKey),
+            userName: localStorage.getItem('userName'),
+            userGrade: localStorage.getItem('userGrade')
+        });
+        
+        return this.userData;
+    }
+    
+    loadUserData() {
+        try {
+            // Try to load from session first
+            const sessionData = localStorage.getItem(this.sessionKey);
+            if (sessionData) {
+                this.userData = JSON.parse(sessionData);
+                console.log('📖 Loaded user session from localStorage:', this.userData);
+                return this.userData;
+            }
+            
+            // Fallback to individual items
+            const name = localStorage.getItem('userName');
+            const grade = localStorage.getItem('userGrade');
+            
+            if (name && grade) {
+                this.userData = {
+                    name: name,
+                    grade: grade,
+                    timestamp: new Date().toISOString(),
+                    sessionId: this.generateSessionId()
+                };
+                console.log('📖 Reconstructed user session from individual items:', this.userData);
+                // Save the reconstructed session
+                localStorage.setItem(this.sessionKey, JSON.stringify(this.userData));
+                return this.userData;
+            }
+            
+            console.log('❌ No user session found');
+            return null;
+        } catch (error) {
+            console.error('❌ Error loading user data:', error);
+            return null;
+        }
+    }
+    
+    getUser() {
+        if (!this.userData) {
+            this.loadUserData();
+        }
+        return this.userData;
+    }
+    
+    isLoggedIn() {
+        const user = this.getUser();
+        const isValid = user && user.name && user.grade;
+        console.log('🔍 User session check:', { 
+            user: user, 
+            isValid: isValid 
+        });
+        return isValid;
+    }
+    
+    clearSession() {
+        this.userData = null;
+        localStorage.removeItem(this.sessionKey);
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userGrade');
+        localStorage.removeItem('hasVisited');
+        console.log('🗑️ User session cleared');
+    }
+    
+    generateSessionId() {
+        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    // Debug function
+    debugSession() {
+        console.log('🔍 SESSION DEBUG:');
+        console.log('   Current userData:', this.userData);
+        console.log('   localStorage session:', localStorage.getItem(this.sessionKey));
+        console.log('   localStorage userName:', localStorage.getItem('userName'));
+        console.log('   localStorage userGrade:', localStorage.getItem('userGrade'));
+        console.log('   localStorage hasVisited:', localStorage.getItem('hasVisited'));
+        console.log('   isLoggedIn():', this.isLoggedIn());
+        return this.userData;
+    }
+}
+
+// Create global user session instance
+const userSession = new UserSession();
+
+// Make it globally accessible for debugging
+window.userSession = userSession;
+window.debugSession = () => userSession.debugSession();
+
 // Widget ID Mapping for Survey Tracking
 const widgetIdMapping = {
     'exam-summary': 1001,
@@ -131,15 +254,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check if user has visited before
     const hasVisited = localStorage.getItem('hasVisited');
+    const isLoggedIn = userSession.isLoggedIn();
     
-    if (!hasVisited) {
-        // Show welcome modal on first visit
-        console.log('First visit detected, showing welcome modal');
+    console.log('🔍 Welcome modal check:');
+    console.log('   hasVisited:', hasVisited);
+    console.log('   isLoggedIn:', isLoggedIn);
+    console.log('   Current user:', userSession.getUser());
+    
+    if (!hasVisited || !isLoggedIn) {
+        // Show welcome modal on first visit or if no valid session
+        console.log('🎉 First visit or invalid session detected, showing welcome modal');
         welcomeModal.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     } else {
-        // Hide modal if user has visited before
-        console.log('Returning user, hiding welcome modal');
+        // Hide modal if user has visited before and has valid session
+        console.log('👋 Returning user with valid session, hiding welcome modal');
         welcomeModal.style.display = 'none';
     }
     
@@ -154,32 +283,23 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('User data:', { userName, userGrade });
         
         if (userName && userGrade) {
-            // Store user info
-            localStorage.setItem('userName', userName);
-            localStorage.setItem('userGrade', userGrade);
-            localStorage.setItem('hasVisited', 'true');
+            // Store user info using UserSession
+            const userData = userSession.setUser(userName, userGrade);
             
-            console.log('💾 Storing user data in localStorage:');
-            console.log('   - Saving userName:', userName);
-            console.log('   - Saving userGrade:', userGrade);
-            console.log('   - Setting hasVisited: true');
+            console.log('💾 User data stored via UserSession:', userData);
             
-            // Verify storage immediately
-            const storedName = localStorage.getItem('userName');
-            const storedGrade = localStorage.getItem('userGrade');
-            const storedVisited = localStorage.getItem('hasVisited');
+            // Verify session immediately
+            const verificationUser = userSession.getUser();
+            console.log('✅ Session verification:', verificationUser);
             
-            console.log('✅ Verification - Data actually stored:');
-            console.log('   - Retrieved userName:', storedName);
-            console.log('   - Retrieved userGrade:', storedGrade);
-            console.log('   - Retrieved hasVisited:', storedVisited);
-            
-            if (storedName !== userName || storedGrade !== userGrade) {
-                console.error('❌ STORAGE FAILED! Data mismatch:');
-                console.error('   - Expected:', { userName, userGrade });
-                console.error('   - Stored:', { storedName, storedGrade });
+            if (!verificationUser || verificationUser.name !== userName || verificationUser.grade !== userGrade) {
+                console.error('❌ SESSION STORAGE FAILED!');
+                console.error('   Expected:', { userName, userGrade });
+                console.error('   Stored:', verificationUser);
+                alert('세션 저장에 실패했습니다. 페이지를 새로고침하고 다시 시도해주세요.');
+                return;
             } else {
-                console.log('🎉 localStorage storage SUCCESS!');
+                console.log('🎉 UserSession storage SUCCESS!');
             }
             
             // Send data to Google Sheets
@@ -769,30 +889,29 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Get user info from localStorage with detailed logging
-        const userName = localStorage.getItem('userName');
-        const userGrade = localStorage.getItem('userGrade');
+        // Get user info from UserSession with detailed logging
+        const currentUser = userSession.getUser();
         
-        console.log('🔍 DEBUG: Checking localStorage for user data:');
-        console.log('   - userName from localStorage:', userName);
-        console.log('   - userGrade from localStorage:', userGrade);
-        console.log('   - localStorage keys:', Object.keys(localStorage));
-        console.log('   - localStorage contents:', {
-            userName: localStorage.getItem('userName'),
-            userGrade: localStorage.getItem('userGrade'),
-            hasVisited: localStorage.getItem('hasVisited')
-        });
+        console.log('🔍 DEBUG: Getting user data from UserSession:');
+        console.log('   Current user from session:', currentUser);
         
-        // Validate user data exists
-        if (!userName || !userGrade) {
-            console.error('❌ CRITICAL: User data missing from localStorage!');
-            console.error('   - userName:', userName);
-            console.error('   - userGrade:', userGrade);
-            alert('사용자 정보를 찾을 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.');
+        if (!currentUser || !currentUser.name || !currentUser.grade) {
+            console.error('❌ CRITICAL: No valid user session found!');
+            console.error('   Current user:', currentUser);
+            console.error('   Session check:', userSession.isLoggedIn());
+            
+            // Try to debug the session
+            userSession.debugSession();
+            
+            alert('사용자 세션을 찾을 수 없습니다. 페이지를 새로고침하고 처음부터 다시 시작해주세요.');
             return;
         }
         
-        console.log('✅ User data found:', { userName, userGrade });
+        const userName = currentUser.name;
+        const userGrade = currentUser.grade;
+        
+        console.log('✅ User data retrieved from session:', { userName, userGrade });
+        console.log('🆔 Session ID:', currentUser.sessionId);
         
         // Prepare survey data
         const surveyData = {
