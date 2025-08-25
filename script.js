@@ -471,7 +471,7 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
     
     // UPDATED Google Apps Script URL (with cache busting)
     const cacheBuster = Date.now();
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkCJEZoUKyEUxdV8eWWvHPpIKlZ_SUJpkYfUgTKU7Ly1rpoTXnHofhSNXkp8LpeMUktw/exec?cb=' + cacheBuster;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz75YD8cilNkOXA3HA4lEBvESRMrEZfU7X9XL0jv6-gWF1Me5yzkx6l_ww-VhlA0j_MmA/exec?cb=' + cacheBuster;
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
@@ -541,7 +541,7 @@ function sendSurveyToGoogleSheets(surveyData) {
     
     // UPDATED Google Apps Script URL (with cache busting)
     const cacheBuster = Date.now();
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkCJEZoUKyEUxdV8eWWvHPpIKlZ_SUJpkYfUgTKU7Ly1rpoTXnHofhSNXkp8LpeMUktw/exec?cb=' + cacheBuster;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz75YD8cilNkOXA3HA4lEBvESRMrEZfU7X9XL0jv6-gWF1Me5yzkx6l_ww-VhlA0j_MmA/exec?cb=' + cacheBuster;
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
