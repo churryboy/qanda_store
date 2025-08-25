@@ -263,6 +263,8 @@ function sendSurveyToGoogleSheets(surveyData) {
         Timestamp: surveyData.timestamp
     });
     
+    console.log('📊 Expected behavior: Should find user row for', surveyData.userName, surveyData.userGrade, 'and add survey data horizontally');
+    
     // Send survey data to Google Sheets
     fetch(scriptURL, {
         method: 'POST',
@@ -273,10 +275,19 @@ function sendSurveyToGoogleSheets(surveyData) {
         return response.text();
     })
     .then(data => {
-        console.log('Success! Survey data sent to Google Sheets:', data);
+        console.log('✅ Success! Survey data sent to Google Sheets:', data);
+        try {
+            const responseData = JSON.parse(data);
+            console.log('📋 Parsed response:', responseData);
+            if (responseData.userRow) {
+                console.log(`✨ Survey data added to row ${responseData.userRow} for widget ${responseData.widgetId}`);
+            }
+        } catch (e) {
+            console.log('Response is not JSON:', data);
+        }
     })
     .catch(error => {
-        console.error('Error sending survey data to Google Sheets:', error);
+        console.error('❌ Error sending survey data to Google Sheets:', error);
     });
 }
 
