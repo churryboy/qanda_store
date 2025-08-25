@@ -485,17 +485,20 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
         Phone: userPhone
     });
     
-    // Send data to Google Sheets (temporarily removing no-cors for debugging)
+    // Send data to Google Sheets
     fetch(scriptURL, {
         method: 'POST',
-        // mode: 'no-cors', // Temporarily commented out for debugging
+        mode: 'no-cors', // Re-enable no-cors to bypass CORS completely
         body: formData
     })
     .then(response => {
         console.log('Response received:', response);
         console.log('Response status:', response.status);
         console.log('Response statusText:', response.statusText);
-        return response.text();
+        
+        // In no-cors mode, we can't read the response, so assume success
+        console.log('🚀 Welcome data sent in no-cors mode - assuming success');
+        return JSON.stringify({ result: 'success', message: 'Welcome data sent (no-cors mode)' });
     })
     .then(data => {
         console.log('Success! Data sent to Google Sheets:', data);
@@ -571,14 +574,17 @@ function sendSurveyToGoogleSheets(surveyData) {
     // Send survey data to Google Sheets
     fetch(scriptURL, {
         method: 'POST',
-        // mode: 'no-cors', // Temporarily commented out for debugging
+        mode: 'no-cors', // Re-enable no-cors to bypass CORS completely
         body: formData
     })
     .then(response => {
         console.log('📞 Survey response received from Apps Script:', response.status, response.statusText);
         console.log('Survey response status:', response.status);
         console.log('Survey response statusText:', response.statusText);
-        return response.text();
+        
+        // In no-cors mode, we can't read the response, so assume success
+        console.log('🚀 Survey data sent in no-cors mode - assuming success');
+        return JSON.stringify({ result: 'success', message: 'Survey data sent (no-cors mode)' });
     })
     .then(data => {
         console.log('✅ Raw response from Apps Script:', data);
