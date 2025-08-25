@@ -485,17 +485,17 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
         Phone: userPhone
     });
     
-    // Send data to Google Sheets
+    // Send data to Google Sheets (temporarily removing no-cors for debugging)
     fetch(scriptURL, {
         method: 'POST',
-        mode: 'no-cors', // Add this to bypass CORS
+        // mode: 'no-cors', // Temporarily commented out for debugging
         body: formData
     })
     .then(response => {
         console.log('Response received:', response);
-        // Note: with no-cors mode, we can't read the response
-        console.log('✅ Welcome data sent successfully (no-cors mode)');
-        return { result: 'success' }; // Assume success since we can't read response
+        console.log('Response status:', response.status);
+        console.log('Response statusText:', response.statusText);
+        return response.text();
     })
     .then(data => {
         console.log('Success! Data sent to Google Sheets:', data);
@@ -569,20 +569,34 @@ function sendSurveyToGoogleSheets(surveyData) {
     // Send survey data to Google Sheets
     fetch(scriptURL, {
         method: 'POST',
-        mode: 'no-cors', // Add this to bypass CORS
+        // mode: 'no-cors', // Temporarily commented out for debugging
         body: formData
     })
     .then(response => {
         console.log('📞 Survey response received from Apps Script:', response.status, response.statusText);
-        // Note: with no-cors mode, we can't read the response
-        console.log('✅ Data sent successfully (no-cors mode)');
-        return { result: 'success' }; // Assume success since we can't read response
+        console.log('Survey response status:', response.status);
+        console.log('Survey response statusText:', response.statusText);
+        return response.text();
     })
     .then(data => {
-        console.log('✅ Survey data sent to Google Sheets (no-cors mode)');
-        console.log('📋 Data object:', data);
-        // Note: In no-cors mode, we assume success since we can't read the actual response
-        console.log('🎉 Survey submission completed - check Google Sheets to verify data');
+        console.log('✅ Raw response from Apps Script:', data);
+        try {
+            const responseData = JSON.parse(data);
+            console.log('📋 Parsed Apps Script response:', responseData);
+            
+            if (responseData.result === 'success') {
+                console.log('🎉 SUCCESS! Survey data processed by Apps Script');
+                console.log('   📍 User found at row:', responseData.userRow);
+                console.log('   🆔 Widget ID:', responseData.widgetId);
+                console.log('   📊 Columns used:', responseData.columns);
+            } else if (responseData.result === 'error') {
+                console.error('❌ APPS SCRIPT ERROR:', responseData.message);
+                console.error('   🔍 This means Apps Script could not process the survey data');
+            }
+        } catch (e) {
+            console.log('⚠️ Response is not JSON (might be HTML error page):', data);
+            console.log('💡 This usually means Apps Script has an execution error');
+        }
     })
     .catch(error => {
         console.error('❌ Network error sending survey data to Google Sheets:', error);
