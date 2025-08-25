@@ -415,7 +415,7 @@ body {
 .widget-card:nth-child(21) .widget-icon { background: #FF6348; } /* 오답노트 자동 생성기 - Orange Red */
 
 /* 새로 추가된 위젯들 - 영어 관련 */
-.widget-card:nth-child(22) .widget-icon { background: #2ED573; } /* 에세이 첨삭 도우미 - Bright Green */
+.widget-card:nth-child(22) .widget-icon { background: #2ED573; } /* 에세이 초안 도우미 - Bright Green */
 .widget-card:nth-child(23) .widget-icon { background: #1E90FF; } /* 발음 교정기 - Dodger Blue */
 .widget-card:nth-child(24) .widget-icon { background: #FF7675; } /* 독해 요약 훈련 - Light Red */
 .widget-card:nth-child(25) .widget-icon { background: #6C5CE7; } /* 영어 회화 챗봇 - Purple */

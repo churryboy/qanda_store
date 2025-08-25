@@ -194,7 +194,7 @@ const widgetIdMapping = {
     
     // 영어 관련 (2xxx)
     'english-essay': 2001,                  // 영어 에세이 첨삭
-    'essay-helper': 2002,                   // 에세이 첨삭 도우미
+    'essay-helper': 2002,                   // 에세이 초안 도우미
     'pronunciation-trainer': 2003,          // 발음 교정기
     'reading-summarizer': 2004,             // 독해 요약 훈련
     'conversation-chatbot': 2005,           // 영어 회화 챗봇
@@ -290,6 +290,40 @@ function checkUserDataStatus() {
 // Make debugging functions globally accessible
 window.checkUserDataStatus = checkUserDataStatus;
 window.getWidgetId = getWidgetId;
+
+// Function to randomize widget order to minimize ordering bias
+function randomizeWidgetOrder() {
+    const generalToolsSection = document.querySelector('.general-tools-section .widgets-grid');
+    if (!generalToolsSection) {
+        console.log('❌ General tools section not found for randomization');
+        return;
+    }
+    
+    // Get all widget cards
+    const widgets = Array.from(generalToolsSection.querySelectorAll('.widget-card'));
+    console.log('🎲 Randomizing order of', widgets.length, 'widgets to minimize ordering bias');
+    
+    // Fisher-Yates shuffle algorithm
+    for (let i = widgets.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [widgets[i], widgets[j]] = [widgets[j], widgets[i]];
+    }
+    
+    // Re-append widgets in randomized order
+    widgets.forEach(widget => {
+        generalToolsSection.appendChild(widget);
+    });
+    
+    console.log('✅ Widget order randomized for this session');
+    
+    // Store randomization state for analytics
+    const randomSeed = Date.now();
+    sessionStorage.setItem('widgetRandomSeed', randomSeed);
+    console.log('🔢 Random seed for this session:', randomSeed);
+}
+
+// Make randomization function globally accessible for testing
+window.randomizeWidgetOrder = randomizeWidgetOrder;
 
 // Mobile App Navigation System
 console.log('Script.js loaded');
@@ -599,7 +633,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ],
             'english': [
                 'english-essay',         // 영어 에세이 첨삭
-                'essay-helper',          // 에세이 첨삭 도우미
+                'essay-helper',          // 에세이 초안 도우미
                 'pronunciation-trainer', // 발음 교정기
                 'reading-summarizer',    // 독해 요약 훈련
                 'conversation-chatbot'   // 영어 회화 챗봇
@@ -777,7 +811,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'math-formula-cards': '수학 공식들을 카드 형태로 정리하여 효과적으로 암기할 수 있는 도구입니다.',
         'graph-visualizer': '수학 함수의 그래프를 시각화하여 이해를 돕는 도구입니다.',
         'wrong-answer-generator': '틀린 문제들을 자동으로 정리하고 복습 계획을 세우는 도구입니다.',
-        'essay-helper': '영어 에세이 작성을 위한 구조와 표현을 개선해주는 도구입니다.',
+        'essay-helper': '영어 에세이 초안 작성을 도와주는 구조와 표현 개선 도구입니다. 📝✨ 아이디어 정리부터 문단 구성까지 체계적으로 지원합니다!',
         'pronunciation-trainer': '정확한 영어 발음을 연습하고 교정받을 수 있는 도구입니다.',
         'reading-summarizer': '영어 지문을 읽고 핵심 내용을 요약하는 연습을 도와주는 도구입니다.',
         'conversation-chatbot': 'AI와 영어로 대화하며 회화 실력을 향상시키는 도구입니다.',
@@ -919,6 +953,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize with all widgets hidden
     function hideAllWidgets() {
+        // First randomize the widget order to minimize ordering bias
+        randomizeWidgetOrder();
+        
         const allWidgets = document.querySelectorAll('.general-tools-section .widget-card');
         allWidgets.forEach((widget) => {
             widget.style.display = 'none';
@@ -928,7 +965,7 @@ document.addEventListener('DOMContentLoaded', function() {
             widget.classList.add('hidden');
             widget.classList.remove('visible');
         });
-        console.log('All widgets hidden on initial load');
+        console.log('All widgets hidden on initial load (after randomization)');
     }
     
     // Survey modal functions
