@@ -75,6 +75,30 @@ function getWidgetId(dataPage) {
     return widgetIdMapping[dataPage] || 9999; // Default fallback ID
 }
 
+// Function to check current localStorage status (for debugging)
+function checkUserDataStatus() {
+    const userName = localStorage.getItem('userName');
+    const userGrade = localStorage.getItem('userGrade');
+    const hasVisited = localStorage.getItem('hasVisited');
+    
+    console.log('🔍 Current localStorage status:');
+    console.log('   - userName:', userName);
+    console.log('   - userGrade:', userGrade);
+    console.log('   - hasVisited:', hasVisited);
+    console.log('   - All localStorage keys:', Object.keys(localStorage));
+    
+    return {
+        userName,
+        userGrade,
+        hasVisited,
+        isValid: Boolean(userName && userGrade)
+    };
+}
+
+// Make debugging functions globally accessible
+window.checkUserDataStatus = checkUserDataStatus;
+window.getWidgetId = getWidgetId;
+
 // Mobile App Navigation System
 console.log('Script.js loaded');
 
@@ -135,7 +159,28 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('userGrade', userGrade);
             localStorage.setItem('hasVisited', 'true');
             
-            console.log('Data stored in localStorage');
+            console.log('💾 Storing user data in localStorage:');
+            console.log('   - Saving userName:', userName);
+            console.log('   - Saving userGrade:', userGrade);
+            console.log('   - Setting hasVisited: true');
+            
+            // Verify storage immediately
+            const storedName = localStorage.getItem('userName');
+            const storedGrade = localStorage.getItem('userGrade');
+            const storedVisited = localStorage.getItem('hasVisited');
+            
+            console.log('✅ Verification - Data actually stored:');
+            console.log('   - Retrieved userName:', storedName);
+            console.log('   - Retrieved userGrade:', storedGrade);
+            console.log('   - Retrieved hasVisited:', storedVisited);
+            
+            if (storedName !== userName || storedGrade !== userGrade) {
+                console.error('❌ STORAGE FAILED! Data mismatch:');
+                console.error('   - Expected:', { userName, userGrade });
+                console.error('   - Stored:', { storedName, storedGrade });
+            } else {
+                console.log('🎉 localStorage storage SUCCESS!');
+            }
             
             // Send data to Google Sheets
             sendToGoogleSheets(userName, userGrade);
@@ -716,9 +761,30 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Get user info from localStorage
-        const userName = localStorage.getItem('userName') || 'Anonymous';
-        const userGrade = localStorage.getItem('userGrade') || 'Unknown';
+        // Get user info from localStorage with detailed logging
+        const userName = localStorage.getItem('userName');
+        const userGrade = localStorage.getItem('userGrade');
+        
+        console.log('🔍 DEBUG: Checking localStorage for user data:');
+        console.log('   - userName from localStorage:', userName);
+        console.log('   - userGrade from localStorage:', userGrade);
+        console.log('   - localStorage keys:', Object.keys(localStorage));
+        console.log('   - localStorage contents:', {
+            userName: localStorage.getItem('userName'),
+            userGrade: localStorage.getItem('userGrade'),
+            hasVisited: localStorage.getItem('hasVisited')
+        });
+        
+        // Validate user data exists
+        if (!userName || !userGrade) {
+            console.error('❌ CRITICAL: User data missing from localStorage!');
+            console.error('   - userName:', userName);
+            console.error('   - userGrade:', userGrade);
+            alert('사용자 정보를 찾을 수 없습니다. 페이지를 새로고침 후 다시 시도해주세요.');
+            return;
+        }
+        
+        console.log('✅ User data found:', { userName, userGrade });
         
         // Prepare survey data
         const surveyData = {
@@ -734,9 +800,10 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         // Log survey results
-        console.log('Survey submitted for:', title);
-        console.log('Widget ID:', currentWidgetId);
-        console.log('Full survey data:', surveyData);
+        console.log('📊 Survey submitted for:', title);
+        console.log('🆔 Widget ID:', currentWidgetId);
+        console.log('👤 User:', userName, '(' + userGrade + ')');
+        console.log('📋 Full survey data:', surveyData);
         
         // Send to Google Sheets
         sendSurveyToGoogleSheets(surveyData);
