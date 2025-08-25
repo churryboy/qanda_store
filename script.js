@@ -1,3 +1,80 @@
+// Widget ID Mapping for Survey Tracking
+const widgetIdMapping = {
+    'exam-summary': 1001,
+    'english-essay': 1002,
+    'math-helper': 1003,
+    'flashcard': 1004,
+    'club-report': 1005,
+    'personal-statement': 1006,
+    'interview-practice': 1007,
+    'career-explorer': 1008,
+    'class-notice': 1009,
+    'conversation-practice': 1010,
+    'study-scheduler': 1011,
+    'mental-care': 1012,
+    'webtoon-ideas': 1013,
+    'video-script': 1014,
+    'rap-lyrics': 1015,
+    'art-design': 1016,
+    'school-record': 1017,
+    'performance-assessment': 1018,
+    'math-formula-cards': 2001,
+    'graph-visualizer': 2002,
+    'wrong-answer-generator': 2003,
+    'essay-helper': 3001,
+    'pronunciation-trainer': 3002,
+    'reading-summarizer': 3003,
+    'conversation-chatbot': 3004,
+    'text-summarizer': 4001,
+    'literature-analyzer': 4002,
+    'vocabulary-cards': 4003,
+    'writing-corrector': 4004,
+    'classical-literature': 4005,
+    'sentence-analyzer': 4006,
+    'timeline-generator': 5001,
+    'concept-comparator': 5002,
+    'real-world-connector': 5003,
+    'map-interpreter': 5004,
+    'law-simulator': 6001,
+    'virtual-experiment': 6002,
+    'birthday-reminder': 7001,
+    'emotion-diary': 7002,
+    'motivation-messages': 7003,
+    'stress-relief': 7004,
+    'integral-graph': 2004,
+    'limit-simulator': 2005,
+    'probability-simulator': 2006,
+    'normal-distribution': 2007,
+    'sequence-helper': 2008,
+    'set-proposition-quiz': 2009,
+    'trigonometry-visualizer': 2010,
+    'electric-circuit-sim': 6003,
+    'optics-simulator': 6004,
+    'celestial-simulator': 6005,
+    'volcano-simulator': 6006,
+    'mineral-guide': 6007,
+    'space-exploration-timeline': 6008,
+    'cell-3d-viewer': 6009,
+    'human-body-simulator': 6010,
+    'taxonomy-quiz': 6011,
+    'chemical-formula-completer': 6012,
+    'periodic-table-explorer': 6013,
+    'person-event-matching': 5005,
+    'historical-source-interpreter': 5006,
+    'cultural-heritage-guide': 5007,
+    'ethics-philosopher-cards': 5008,
+    'ideology-comparison': 5009,
+    'ethics-dilemma-discussion': 5010,
+    'social-constitution-summary-cards': 5011,
+    'precedent-learner': 5012,
+    'political-system-comparison': 5013
+};
+
+// Function to get widget ID by data-page attribute
+function getWidgetId(dataPage) {
+    return widgetIdMapping[dataPage] || 9999; // Default fallback ID
+}
+
 // Mobile App Navigation System
 console.log('Script.js loaded');
 
@@ -153,6 +230,54 @@ function showWelcomeMessage(userName, userGrade) {
     setTimeout(() => {
         notification.remove();
     }, 3000);
+}
+
+function sendSurveyToGoogleSheets(surveyData) {
+    console.log('Sending survey data to Google Sheets:', surveyData);
+    
+    // Same Google Apps Script URL but with survey data
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzCJr9dlyWUYPBMhXxOKct6gTAy0qW_6oV3k_suhfkQVLL4G8yV6wM0Y8dN0oMPQulOPA/exec';
+    
+    const formData = new FormData();
+    formData.append('Type', 'Survey'); // Distinguish from welcome data
+    formData.append('WidgetId', surveyData.widgetId);
+    formData.append('WidgetTitle', surveyData.widgetTitle);
+    formData.append('UserName', surveyData.userName);
+    formData.append('UserGrade', surveyData.userGrade);
+    formData.append('Frequency', surveyData.frequency);
+    formData.append('Helpfulness', surveyData.helpfulness);
+    formData.append('Need', surveyData.need);
+    formData.append('UtmSource', surveyData.utmSource);
+    formData.append('Timestamp', surveyData.timestamp);
+    
+    console.log('Survey data to be sent:', {
+        Type: 'Survey',
+        WidgetId: surveyData.widgetId,
+        WidgetTitle: surveyData.widgetTitle,
+        UserName: surveyData.userName,
+        UserGrade: surveyData.userGrade,
+        Frequency: surveyData.frequency,
+        Helpfulness: surveyData.helpfulness,
+        Need: surveyData.need,
+        UtmSource: surveyData.utmSource,
+        Timestamp: surveyData.timestamp
+    });
+    
+    // Send survey data to Google Sheets
+    fetch(scriptURL, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        console.log('Survey response received:', response);
+        return response.text();
+    })
+    .then(data => {
+        console.log('Success! Survey data sent to Google Sheets:', data);
+    })
+    .catch(error => {
+        console.error('Error sending survey data to Google Sheets:', error);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -538,10 +663,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Survey modal functions
+    let currentWidgetId = null; // Store current widget ID
+    
     function showSurveyModal(title, description, pageId) {
         const modal = document.getElementById('survey-modal');
         const modalTitle = document.getElementById('modal-widget-title');
         const modalDescription = document.getElementById('modal-widget-description');
+        
+        // Get widget ID from mapping
+        currentWidgetId = getWidgetId(pageId);
         
         modalTitle.textContent = title;
         modalDescription.textContent = description;
@@ -551,12 +681,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const radioButtons = modal.querySelectorAll('input[type="radio"]');
         radioButtons.forEach(radio => radio.checked = false);
         
-        console.log(`Survey modal opened for: ${title}`);
+        console.log(`Survey modal opened for: ${title} (ID: ${currentWidgetId})`);
     }
     
     function closeSurveyModal() {
         const modal = document.getElementById('survey-modal');
         modal.classList.remove('show');
+        currentWidgetId = null; // Reset widget ID
         console.log('Survey modal closed');
     }
     
@@ -574,9 +705,30 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Get user info from localStorage
+        const userName = localStorage.getItem('userName') || 'Anonymous';
+        const userGrade = localStorage.getItem('userGrade') || 'Unknown';
+        
+        // Prepare survey data
+        const surveyData = {
+            widgetId: currentWidgetId,
+            widgetTitle: title,
+            userName: userName,
+            userGrade: userGrade,
+            frequency: frequency,
+            helpfulness: helpfulness,
+            need: need,
+            timestamp: new Date().toISOString(),
+            utmSource: `widget_${currentWidgetId}` // UTM source with widget ID
+        };
+        
         // Log survey results
         console.log('Survey submitted for:', title);
-        console.log('Responses:', { frequency, helpfulness, need });
+        console.log('Widget ID:', currentWidgetId);
+        console.log('Full survey data:', surveyData);
+        
+        // Send to Google Sheets
+        sendSurveyToGoogleSheets(surveyData);
         
         // Show thank you message
         alert('설문에 참여해주셔서 감사합니다! 소중한 의견이 반영될 예정입니다.');
