@@ -278,7 +278,7 @@ function showWelcomeMessage(userName, userGrade) {
 }
 
 function sendSurveyToGoogleSheets(surveyData) {
-    console.log('Sending survey data to Google Sheets:', surveyData);
+    console.log('📊 Sending survey data to Google Sheets:', surveyData);
     
     // Same Google Apps Script URL but with survey data
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzCJr9dlyWUYPBMhXxOKct6gTAy0qW_6oV3k_suhfkQVLL4G8yV6wM0Y8dN0oMPQulOPA/exec';
@@ -295,20 +295,19 @@ function sendSurveyToGoogleSheets(surveyData) {
     formData.append('UtmSource', surveyData.utmSource);
     formData.append('Timestamp', surveyData.timestamp);
     
-    console.log('Survey data to be sent:', {
-        Type: 'Survey',
-        WidgetId: surveyData.widgetId,
-        WidgetTitle: surveyData.widgetTitle,
-        UserName: surveyData.userName,
-        UserGrade: surveyData.userGrade,
-        Frequency: surveyData.frequency,
-        Helpfulness: surveyData.helpfulness,
-        Need: surveyData.need,
-        UtmSource: surveyData.utmSource,
-        Timestamp: surveyData.timestamp
-    });
+    console.log('📋 Survey data to be sent to Apps Script:');
+    console.log('   🆔 Type: Survey');
+    console.log('   🔢 WidgetId:', surveyData.widgetId);
+    console.log('   📝 WidgetTitle:', surveyData.widgetTitle);
+    console.log('   👤 UserName:', surveyData.userName);
+    console.log('   🎓 UserGrade:', surveyData.userGrade);
+    console.log('   📊 Frequency:', surveyData.frequency);
+    console.log('   💡 Helpfulness:', surveyData.helpfulness);
+    console.log('   ⭐ Need:', surveyData.need);
+    console.log('   🔗 UtmSource:', surveyData.utmSource);
     
-    console.log('📊 Expected behavior: Should find user row for', surveyData.userName, surveyData.userGrade, 'and add survey data horizontally');
+    console.log('🎯 Expected: Apps Script should find user with name="' + surveyData.userName + '" and grade="' + surveyData.userGrade + '"');
+    console.log('📊 Expected: Should add data to existing row horizontally, not create new row');
     
     // Send survey data to Google Sheets
     fetch(scriptURL, {
@@ -316,23 +315,32 @@ function sendSurveyToGoogleSheets(surveyData) {
         body: formData
     })
     .then(response => {
-        console.log('Survey response received:', response);
+        console.log('📞 Survey response received from Apps Script:', response.status, response.statusText);
         return response.text();
     })
     .then(data => {
-        console.log('✅ Success! Survey data sent to Google Sheets:', data);
+        console.log('✅ Raw response from Apps Script:', data);
         try {
             const responseData = JSON.parse(data);
-            console.log('📋 Parsed response:', responseData);
-            if (responseData.userRow) {
-                console.log(`✨ Survey data added to row ${responseData.userRow} for widget ${responseData.widgetId}`);
+            console.log('📋 Parsed Apps Script response:', responseData);
+            
+            if (responseData.result === 'success') {
+                console.log('🎉 SUCCESS! Survey data processed by Apps Script');
+                console.log('   📍 User found at row:', responseData.userRow);
+                console.log('   🆔 Widget ID:', responseData.widgetId);
+                console.log('   📊 Columns used:', responseData.columns);
+            } else if (responseData.result === 'error') {
+                console.error('❌ APPS SCRIPT ERROR:', responseData.message);
+                console.error('   🔍 This means Apps Script could not process the survey data');
+                console.error('   💡 Check if user exists in Google Sheets with exact name/grade match');
             }
         } catch (e) {
-            console.log('Response is not JSON:', data);
+            console.log('⚠️ Response is not JSON (might be HTML error page):', data);
+            console.log('💡 This usually means Apps Script has an execution error');
         }
     })
     .catch(error => {
-        console.error('❌ Error sending survey data to Google Sheets:', error);
+        console.error('❌ Network error sending survey data to Google Sheets:', error);
     });
 }
 
