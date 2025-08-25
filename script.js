@@ -133,7 +133,16 @@ class UserSession {
         const nameHash = this.simpleHash(name);
         const gradeHash = this.simpleHash(grade);
         
-        return `user_${nameHash}_${gradeHash}_${timestamp}_${random}`;
+        const userId = `user_${nameHash}_${gradeHash}_${timestamp}_${random}`;
+        
+        console.log('🆔 Generating unique user ID:');
+        console.log('   📝 Name:', name, '→ Hash:', nameHash);
+        console.log('   🎓 Grade:', grade, '→ Hash:', gradeHash);
+        console.log('   ⏰ Timestamp:', timestamp);
+        console.log('   🎲 Random:', random);
+        console.log('   ✨ Final UserId:', userId);
+        
+        return userId;
     }
     
     simpleHash(str) {
