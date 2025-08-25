@@ -469,8 +469,8 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
     
     console.log('📋 Including userId in welcome data:', userId);
     
-    // CORRECTED Google Apps Script URL
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxx85dEXZtFDFPG23q6yI8Ka5QD7qdFtm2c5ik-tlSlgP1ePCvVKFjzAXncxx_E__eMUQ/exec';
+    // UPDATED Google Apps Script URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxxjVSDjXVGQsgSzl2kUQd7dJMBlbXwpBLxvxgeaODCCglL9K1axIgiRtZ-3GsM8rr_ZQ/exec';
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
@@ -530,8 +530,8 @@ function sendSurveyToGoogleSheets(surveyData) {
     
     console.log('📋 Including userId in survey data:', userId);
     
-    // CORRECTED Google Apps Script URL
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxx85dEXZtFDFPG23q6yI8Ka5QD7qdFtm2c5ik-tlSlgP1ePCvVKFjzAXncxx_E__eMUQ/exec';
+    // UPDATED Google Apps Script URL  
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxxjVSDjXVGQsgSzl2kUQd7dJMBlbXwpBLxvxgeaODCCglL9K1axIgiRtZ-3GsM8rr_ZQ/exec';
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
