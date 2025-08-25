@@ -485,10 +485,10 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
         Phone: userPhone
     });
     
-    // Send data to Google Sheets
+    // Send data to Google Sheets (DEBUG MODE: CORS enabled to see actual response)
     fetch(scriptURL, {
         method: 'POST',
-        mode: 'no-cors', // Re-enable no-cors to bypass CORS completely
+        // mode: 'no-cors', // Temporarily disable for debugging
         body: formData
     })
     .then(response => {
@@ -496,9 +496,9 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
         console.log('Response status:', response.status);
         console.log('Response statusText:', response.statusText);
         
-        // In no-cors mode, we can't read the response, so assume success
-        console.log('🚀 Welcome data sent in no-cors mode - assuming success');
-        return JSON.stringify({ result: 'success', message: 'Welcome data sent (no-cors mode)' });
+        // DEBUG MODE: Read actual response
+        console.log('🔍 Reading actual response from Apps Script...');
+        return response.text();
     })
     .then(data => {
         console.log('Success! Data sent to Google Sheets:', data);
@@ -574,7 +574,7 @@ function sendSurveyToGoogleSheets(surveyData) {
     // Send survey data to Google Sheets
     fetch(scriptURL, {
         method: 'POST',
-        mode: 'no-cors', // Re-enable no-cors to bypass CORS completely
+        // mode: 'no-cors', // Temporarily disable for debugging
         body: formData
     })
     .then(response => {
@@ -582,9 +582,9 @@ function sendSurveyToGoogleSheets(surveyData) {
         console.log('Survey response status:', response.status);
         console.log('Survey response statusText:', response.statusText);
         
-        // In no-cors mode, we can't read the response, so assume success
-        console.log('🚀 Survey data sent in no-cors mode - assuming success');
-        return JSON.stringify({ result: 'success', message: 'Survey data sent (no-cors mode)' });
+        // DEBUG MODE: Read actual response
+        console.log('🔍 Reading actual survey response from Apps Script...');
+        return response.text();
     })
     .then(data => {
         console.log('✅ Raw response from Apps Script:', data);
