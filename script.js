@@ -469,9 +469,8 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
     
     console.log('📋 Including userId in welcome data:', userId);
     
-    // UPDATED Google Apps Script URL (with cache busting) - Enhanced debugging version
-    const cacheBuster = Date.now();
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzivhDC5eRan0prmQX_wZRa3Kn_21-hT92SZvy6eVxDph90FCrLkIybRmY-nMO_f-785Q/exec?cb=' + cacheBuster;
+    // REVERTED to working Google Apps Script URL 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkCJEZoUKyEUxdV8eWWvHPpIKlZ_SUJpkYfUgTKU7Ly1rpoTXnHofhSNXkp8LpeMUktw/exec';
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
@@ -479,10 +478,7 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
     formData.append('Grade', userGrade);
     formData.append('Phone', userPhone);
     
-    console.log('📋 Welcome FormData entries:');
-    for (let [key, value] of formData.entries()) {
-        console.log(`   ${key}: ${value}`);
-    }
+
     
     console.log('Data to be sent:', {
         UserId: userId,
@@ -544,9 +540,8 @@ function sendSurveyToGoogleSheets(surveyData) {
     
     console.log('📋 Including userId in survey data:', userId);
     
-    // UPDATED Google Apps Script URL (with cache busting) - Enhanced debugging version  
-    const cacheBuster = Date.now();
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzivhDC5eRan0prmQX_wZRa3Kn_21-hT92SZvy6eVxDph90FCrLkIybRmY-nMO_f-785Q/exec?cb=' + cacheBuster;
+    // REVERTED to working Google Apps Script URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkCJEZoUKyEUxdV8eWWvHPpIKlZ_SUJpkYfUgTKU7Ly1rpoTXnHofhSNXkp8LpeMUktw/exec';
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
@@ -560,10 +555,7 @@ function sendSurveyToGoogleSheets(surveyData) {
     formData.append('Need', surveyData.need);
     formData.append('UtmSource', surveyData.utmSource);
     
-    console.log('📋 Survey FormData entries:');
-    for (let [key, value] of formData.entries()) {
-        console.log(`   ${key}: ${value}`);
-    }
+
     formData.append('Timestamp', surveyData.timestamp);
     
     console.log('📋 Survey data to be sent to Apps Script:');
@@ -1098,10 +1090,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Send to Google Sheets
         sendSurveyToGoogleSheets(surveyData);
         
-        // Add delay to ensure fetch completes (replacing the old alert delay)
-        setTimeout(() => {
-            closeSurveyModal();
-        }, 2000); // 2 second delay should be enough for the request to complete
+        // Show thank you message (this was working before)
+        alert('설문에 참여해주셔서 감사합니다! 소중한 의견이 반영될 예정입니다.');
+        
+        closeSurveyModal();
     }
     
     // Modal event listeners
