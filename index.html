@@ -148,6 +148,13 @@
             box-sizing: border-box !important;
         }
 
+        .field-description {
+            font-size: 0.8rem !important;
+            color: #888 !important;
+            margin: 4px 0 8px 0 !important;
+            line-height: 1.4 !important;
+        }
+
         .form-group input:focus,
         .form-group select:focus {
             outline: none !important;
@@ -394,6 +401,11 @@
                             <option value="대학생">대학생</option>
                             <option value="성인">성인</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-phone">전화번호</label>
+                        <p class="field-description">전화번호 제출은 선택사항이지만, 제출이 되지 않으면 사례비를 지급해드릴 수 없습니다</p>
+                        <input type="text" id="user-phone" name="userPhone" placeholder="전화번호를 입력하세요 (선택사항)">
                     </div>
                     <div class="modal-actions">
                         <button type="submit" class="btn-primary">시작하기</button>

@@ -12,7 +12,7 @@ class UserSession {
         console.log('🔧 UserSession initialized:', this.userData);
     }
     
-    setUser(name, grade) {
+    setUser(name, grade, phone = '') {
         // Generate unique user ID
         const uniqueUserId = this.generateUniqueUserId(name, grade);
         
@@ -20,6 +20,7 @@ class UserSession {
             userId: uniqueUserId,
             name: name,
             grade: grade,
+            phone: phone,
             timestamp: new Date().toISOString(),
             sessionId: this.generateSessionId()
         };
@@ -28,6 +29,7 @@ class UserSession {
         localStorage.setItem(this.sessionKey, JSON.stringify(this.userData));
         localStorage.setItem('userName', name);
         localStorage.setItem('userGrade', grade);
+        localStorage.setItem('userPhone', phone);
         localStorage.setItem('userId', uniqueUserId); // Store unique ID separately
         localStorage.setItem('hasVisited', 'true');
         
@@ -36,6 +38,7 @@ class UserSession {
             sessionData: localStorage.getItem(this.sessionKey),
             userName: localStorage.getItem('userName'),
             userGrade: localStorage.getItem('userGrade'),
+            userPhone: localStorage.getItem('userPhone'),
             userId: localStorage.getItem('userId')
         });
         
@@ -64,6 +67,7 @@ class UserSession {
             // Fallback to individual items
             const name = localStorage.getItem('userName');
             const grade = localStorage.getItem('userGrade');
+            const phone = localStorage.getItem('userPhone') || '';
             let userId = localStorage.getItem('userId');
             
             if (name && grade) {
@@ -78,6 +82,7 @@ class UserSession {
                     userId: userId,
                     name: name,
                     grade: grade,
+                    phone: phone,
                     timestamp: new Date().toISOString(),
                     sessionId: this.generateSessionId()
                 };
@@ -118,6 +123,8 @@ class UserSession {
         localStorage.removeItem(this.sessionKey);
         localStorage.removeItem('userName');
         localStorage.removeItem('userGrade');
+        localStorage.removeItem('userPhone');
+        localStorage.removeItem('userId');
         localStorage.removeItem('hasVisited');
         console.log('🗑️ User session cleared');
     }
@@ -382,12 +389,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const userName = document.getElementById('user-name').value;
         const userGrade = document.getElementById('user-grade').value;
+        const userPhone = document.getElementById('user-phone').value;
         
-        console.log('User data:', { userName, userGrade });
+        console.log('User data:', { userName, userGrade, userPhone });
         
         if (userName && userGrade) {
             // Store user info using UserSession
-            const userData = userSession.setUser(userName, userGrade);
+            const userData = userSession.setUser(userName, userGrade, userPhone);
             
             console.log('💾 User data stored via UserSession:', userData);
             
@@ -406,7 +414,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Send data to Google Sheets
-            sendToGoogleSheets(userName, userGrade);
+            sendToGoogleSheets(userName, userGrade, userPhone);
             
             // Hide modal immediately using multiple methods
             console.log('Hiding modal...');
@@ -443,14 +451,17 @@ function resetWelcomeModal() {
     localStorage.removeItem('hasVisited');
     localStorage.removeItem('userName');
     localStorage.removeItem('userGrade');
+    localStorage.removeItem('userPhone');
+    localStorage.removeItem('userId');
+    userSession.clearSession();
     location.reload();
 }
 
 // Make reset function globally accessible for testing
 window.resetWelcomeModal = resetWelcomeModal;
 
-function sendToGoogleSheets(userName, userGrade) {
-    console.log('Sending to Google Sheets:', { userName, userGrade });
+function sendToGoogleSheets(userName, userGrade, userPhone = '') {
+    console.log('Sending to Google Sheets:', { userName, userGrade, userPhone });
     
     // Get current user session to include userId
     const currentUser = userSession.getUser();
@@ -465,11 +476,13 @@ function sendToGoogleSheets(userName, userGrade) {
     formData.append('UserId', userId); // Add unique user ID
     formData.append('Name', userName);
     formData.append('Grade', userGrade);
+    formData.append('Phone', userPhone);
     
     console.log('Data to be sent:', {
         UserId: userId,
         Name: userName,
-        Grade: userGrade
+        Grade: userGrade,
+        Phone: userPhone
     });
     
     // Send data to Google Sheets
@@ -1031,8 +1044,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const userName = currentUser.name;
         const userGrade = currentUser.grade;
+        const userPhone = currentUser.phone || '';
         
-        console.log('✅ User data retrieved from session:', { userName, userGrade });
+        console.log('✅ User data retrieved from session:', { userName, userGrade, userPhone });
         console.log('🆔 Session ID:', currentUser.sessionId);
         
         // Prepare survey data
@@ -1051,7 +1065,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Log survey results
         console.log('📊 Survey submitted for:', title);
         console.log('🆔 Widget ID:', currentWidgetId);
-        console.log('👤 User:', userName, '(' + userGrade + ')');
+        console.log('👤 User:', userName, '(' + userGrade + ')', userPhone ? `Tel: ${userPhone}` : 'No phone');
         console.log('📋 Full survey data:', surveyData);
         
         // Send to Google Sheets
