@@ -107,33 +107,33 @@ window.resetWelcomeModal = resetWelcomeModal;
 function sendToGoogleSheets(userName, userGrade) {
     console.log('Sending to Google Sheets:', { userName, userGrade });
     
-    // For now, we'll use a placeholder URL - you need to set up Google Apps Script
-    const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+    // Actual Google Apps Script URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzCJr9dlyWUYPBMhXxOKct6gTAy0qW_6oV3k_suhfkQVLL4G8yV6wM0Y8dN0oMPQulOPA/exec';
     
     const formData = new FormData();
     formData.append('Name', userName);
     formData.append('Grade', userGrade);
     
-    // Note: This will fail until you set up Google Apps Script
-    // For testing, we'll just log the data
     console.log('Data to be sent:', {
         Name: userName,
         Grade: userGrade
     });
     
-    // Uncomment this when you have Google Apps Script set up
-    /*
+    // Send data to Google Sheets
     fetch(scriptURL, {
         method: 'POST',
         body: formData
     })
     .then(response => {
-        console.log('Success!', response);
+        console.log('Response received:', response);
+        return response.text();
+    })
+    .then(data => {
+        console.log('Success! Data sent to Google Sheets:', data);
     })
     .catch(error => {
-        console.error('Error!', error);
+        console.error('Error sending to Google Sheets:', error);
     });
-    */
 }
 
 function showWelcomeMessage(userName, userGrade) {
