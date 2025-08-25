@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Q&A Store - 모바일 앱</title>
+    <title>학습비서 - AI 학습 도우미</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Force 3-column grid layout */
@@ -74,6 +74,123 @@
             visibility: visible !important;
             position: relative !important;
             opacity: 1 !important;
+        }
+
+        /* Welcome Modal Styles - Force Display */
+        #welcome-modal {
+            display: flex !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background: rgba(0, 0, 0, 0.7) !important;
+            backdrop-filter: blur(5px) !important;
+            z-index: 10000 !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 20px !important;
+        }
+
+        .welcome-modal {
+            background: white !important;
+            border-radius: 16px !important;
+            max-width: 400px !important;
+            width: 90% !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        .welcome-modal .modal-header {
+            padding: 24px 24px 16px !important;
+            border-bottom: 1px solid #eee !important;
+            text-align: center !important;
+        }
+
+        .welcome-modal .modal-header h2 {
+            color: #FF5500 !important;
+            margin: 0 0 12px 0 !important;
+            font-size: 1.5rem !important;
+            font-weight: 600 !important;
+        }
+
+        .welcome-modal .modal-header p {
+            color: #666 !important;
+            margin: 0 !important;
+            font-size: 0.9rem !important;
+        }
+
+        .welcome-modal .modal-content {
+            padding: 24px !important;
+        }
+
+        .form-group {
+            margin-bottom: 20px !important;
+        }
+
+        .form-group label {
+            display: block !important;
+            margin-bottom: 8px !important;
+            font-weight: 500 !important;
+            color: #333 !important;
+            font-size: 0.95rem !important;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100% !important;
+            padding: 12px 16px !important;
+            border: 2px solid #e1e5e9 !important;
+            border-radius: 8px !important;
+            font-size: 1rem !important;
+            font-family: 'Inter', sans-serif !important;
+            transition: all 0.3s ease !important;
+            background-color: white !important;
+            box-sizing: border-box !important;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none !important;
+            border-color: #FF5500 !important;
+            box-shadow: 0 0 0 3px rgba(255, 85, 0, 0.1) !important;
+        }
+
+        .form-group input::placeholder {
+            color: #999 !important;
+        }
+
+        .form-group select {
+            cursor: pointer !important;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF5500, #ff6b1a) !important;
+            color: white !important;
+            border: none !important;
+            padding: 14px 28px !important;
+            border-radius: 8px !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            width: 100% !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 25px rgba(255, 85, 0, 0.3) !important;
+        }
+
+        .btn-primary:active {
+            transform: translateY(0) !important;
+        }
+
+        /* Hidden class for modal */
+        .hidden {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
         }
 
         /* Survey Modal Styles */
@@ -199,28 +316,28 @@
             accent-color: #FF5500;
         }
 
-        .radio-group label:has(input:checked) {
-            background: rgba(255, 85, 0, 0.1);
-            border: 2px solid #FF5500;
+        .radio-group input[type="radio"]:checked + span {
             color: #FF5500;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .modal-actions {
             display: flex;
             gap: 12px;
             justify-content: flex-end;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
+            margin-top: 24px;
         }
 
-        .submit-survey, .cancel-survey {
+        .submit-survey,
+        .cancel-survey {
             padding: 12px 24px;
+            border: none;
             border-radius: 8px;
+            font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
-            border: none;
+            font-family: 'Inter', sans-serif;
         }
 
         .submit-survey {
@@ -235,6 +352,7 @@
         .cancel-survey {
             background: #f8f9fa;
             color: #666;
+            border: 1px solid #e1e5e9;
         }
 
         .cancel-survey:hover {
@@ -244,6 +362,47 @@
     </style>
 </head>
 <body>
+    <!-- Welcome Modal -->
+    <div id="welcome-modal" class="modal-overlay">
+        <div class="modal-container welcome-modal">
+            <div class="modal-header">
+                <h2>🎓 학습비서에 오신 것을 환영합니다!</h2>
+                <p>개인화된 학습 경험을 위해 간단한 정보를 입력해주세요.</p>
+            </div>
+            <div class="modal-content">
+                <form id="welcome-form">
+                    <div class="form-group">
+                        <label for="user-name">이름</label>
+                        <input type="text" id="user-name" name="userName" placeholder="이름을 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-grade">학년</label>
+                        <select id="user-grade" name="userGrade" required>
+                            <option value="">학년을 선택하세요</option>
+                            <option value="초등학교 1학년">초등학교 1학년</option>
+                            <option value="초등학교 2학년">초등학교 2학년</option>
+                            <option value="초등학교 3학년">초등학교 3학년</option>
+                            <option value="초등학교 4학년">초등학교 4학년</option>
+                            <option value="초등학교 5학년">초등학교 5학년</option>
+                            <option value="초등학교 6학년">초등학교 6학년</option>
+                            <option value="중학교 1학년">중학교 1학년</option>
+                            <option value="중학교 2학년">중학교 2학년</option>
+                            <option value="중학교 3학년">중학교 3학년</option>
+                            <option value="고등학교 1학년">고등학교 1학년</option>
+                            <option value="고등학교 2학년">고등학교 2학년</option>
+                            <option value="고등학교 3학년">고등학교 3학년</option>
+                            <option value="대학생">대학생</option>
+                            <option value="성인">성인</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-primary">시작하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="app-header">
         <div class="header-content">

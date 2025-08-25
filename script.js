@@ -9,6 +9,152 @@ window.addEventListener('load', function() {
     console.log('showAll exists?', typeof window.showAll);
 });
 
+// Welcome Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, setting up welcome modal');
+    
+    const welcomeModal = document.getElementById('welcome-modal');
+    const welcomeForm = document.getElementById('welcome-form');
+    
+    if (!welcomeModal) {
+        console.error('Welcome modal not found!');
+        return;
+    }
+    
+    if (!welcomeForm) {
+        console.error('Welcome form not found!');
+        return;
+    }
+    
+    console.log('Welcome modal and form found');
+    
+    // Check if user has visited before
+    const hasVisited = localStorage.getItem('hasVisited');
+    
+    if (!hasVisited) {
+        // Show welcome modal on first visit
+        console.log('First visit detected, showing welcome modal');
+        welcomeModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    } else {
+        // Hide modal if user has visited before
+        console.log('Returning user, hiding welcome modal');
+        welcomeModal.style.display = 'none';
+    }
+    
+    // Handle form submission
+    welcomeForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log('Form submitted - preventing default');
+        
+        const userName = document.getElementById('user-name').value;
+        const userGrade = document.getElementById('user-grade').value;
+        
+        console.log('User data:', { userName, userGrade });
+        
+        if (userName && userGrade) {
+            // Store user info
+            localStorage.setItem('userName', userName);
+            localStorage.setItem('userGrade', userGrade);
+            localStorage.setItem('hasVisited', 'true');
+            
+            console.log('Data stored in localStorage');
+            
+            // Send data to Google Sheets
+            sendToGoogleSheets(userName, userGrade);
+            
+            // Hide modal immediately using multiple methods
+            console.log('Hiding modal...');
+            welcomeModal.style.display = 'none';
+            welcomeModal.style.visibility = 'hidden';
+            welcomeModal.style.opacity = '0';
+            welcomeModal.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+            
+            console.log('Modal should be hidden now');
+            
+            // Remove the welcome message - no more orange tooltip
+            // setTimeout(() => {
+            //     showWelcomeMessage(userName, userGrade);
+            // }, 100);
+        } else {
+            console.log('Form validation failed');
+            alert('이름과 학년을 모두 입력해주세요.');
+        }
+    });
+    
+    // Also handle button click directly as backup
+    const submitButton = welcomeForm.querySelector('.btn-primary');
+    if (submitButton) {
+        submitButton.addEventListener('click', function(e) {
+            console.log('Submit button clicked directly');
+            // The form submit event should handle this, but just in case
+        });
+    }
+});
+
+// Function to reset for testing - call this in console: resetWelcomeModal()
+function resetWelcomeModal() {
+    localStorage.removeItem('hasVisited');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userGrade');
+    location.reload();
+}
+
+// Make reset function globally accessible for testing
+window.resetWelcomeModal = resetWelcomeModal;
+
+function sendToGoogleSheets(userName, userGrade) {
+    console.log('Sending to Google Sheets:', { userName, userGrade });
+    
+    // For now, we'll use a placeholder URL - you need to set up Google Apps Script
+    const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+    
+    const formData = new FormData();
+    formData.append('Name', userName);
+    formData.append('Grade', userGrade);
+    
+    // Note: This will fail until you set up Google Apps Script
+    // For testing, we'll just log the data
+    console.log('Data to be sent:', {
+        Name: userName,
+        Grade: userGrade
+    });
+    
+    // Uncomment this when you have Google Apps Script set up
+    /*
+    fetch(scriptURL, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        console.log('Success!', response);
+    })
+    .catch(error => {
+        console.error('Error!', error);
+    });
+    */
+}
+
+function showWelcomeMessage(userName, userGrade) {
+    // Create and show a welcome notification
+    const notification = document.createElement('div');
+    notification.className = 'welcome-notification';
+    notification.innerHTML = `
+        <div class="notification-content">
+            <h3>🎉 ${userName}님, 환영합니다!</h3>
+            <p>${userGrade}에 맞는 맞춤형 학습 도구를 준비했습니다.</p>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing app...');
     
