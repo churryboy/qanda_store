@@ -529,6 +529,8 @@ function showWelcomeMessage(userName, userGrade) {
 function sendSurveyToGoogleSheets(surveyData) {
     console.log('📊 Sending survey data to Google Sheets:', surveyData);
     
+    return new Promise((resolve, reject) => {
+    
     // Get current user session to include userId
     const currentUser = userSession.getUser();
     const userId = currentUser ? currentUser.userId : 'unknown_user';
@@ -589,20 +591,26 @@ function sendSurveyToGoogleSheets(surveyData) {
                 console.log('   📍 User found at row:', responseData.userRow);
                 console.log('   🆔 Widget ID:', responseData.widgetId);
                 console.log('   📊 Columns used:', responseData.columns);
+                resolve(responseData);
             } else if (responseData.result === 'error') {
                 console.error('❌ APPS SCRIPT ERROR:', responseData.message);
                 console.error('   🔍 This means Apps Script could not process the survey data');
+                reject(new Error(responseData.message));
             }
         } catch (e) {
             console.log('⚠️ Response is not JSON (might be HTML error page):', data);
             console.log('💡 This usually means Apps Script has an execution error');
+            reject(e);
         }
     })
     .catch(error => {
         console.error('❌ Network error sending survey data to Google Sheets:', error);
         // Don't show error to user as data might still be sent
         console.log('Note: Data may still be sent despite error (CORS limitation)');
+        reject(error);
     });
+    
+    }); // Close the Promise constructor
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1077,11 +1085,17 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('👤 User:', userName, '(' + userGrade + ')', userPhone ? `Tel: ${userPhone}` : 'No phone');
         console.log('📋 Full survey data:', surveyData);
         
-        // Send to Google Sheets
-        sendSurveyToGoogleSheets(surveyData);
-        
-        // Close modal immediately without showing thank you message
-        closeSurveyModal();
+        // Send to Google Sheets and wait for completion
+        sendSurveyToGoogleSheets(surveyData)
+            .then(response => {
+                console.log('✅ Survey successfully sent and processed:', response);
+                closeSurveyModal();
+            })
+            .catch(error => {
+                console.error('❌ Survey submission failed:', error);
+                // Still close modal even if there's an error
+                closeSurveyModal();
+            });
     }
     
     // Modal event listeners
