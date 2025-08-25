@@ -469,8 +469,9 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
     
     console.log('📋 Including userId in welcome data:', userId);
     
-    // UPDATED Google Apps Script URL
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkCJEZoUKyEUxdV8eWWvHPpIKlZ_SUJpkYfUgTKU7Ly1rpoTXnHofhSNXkp8LpeMUktw/exec';
+    // UPDATED Google Apps Script URL (with cache busting)
+    const cacheBuster = Date.now();
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkCJEZoUKyEUxdV8eWWvHPpIKlZ_SUJpkYfUgTKU7Ly1rpoTXnHofhSNXkp8LpeMUktw/exec?cb=' + cacheBuster;
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
@@ -492,16 +493,16 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
         body: formData
     })
     .then(response => {
-        console.log('Response received:', response);
-        console.log('Response status:', response.status);
-        console.log('Response statusText:', response.statusText);
+        console.log('🚀 [DEBUG v2.0] Welcome response received:', response);
+        console.log('📊 [DEBUG v2.0] Welcome response status:', response.status);
+        console.log('📝 [DEBUG v2.0] Welcome response statusText:', response.statusText);
         
         // DEBUG MODE: Read actual response
-        console.log('🔍 Reading actual response from Apps Script...');
+        console.log('🔍 [DEBUG v2.0] Reading actual welcome response from Apps Script...');
         return response.text();
     })
     .then(data => {
-        console.log('Success! Data sent to Google Sheets:', data);
+        console.log('✅ [DEBUG v2.0] Welcome data response:', data);
     })
     .catch(error => {
         console.error('Error sending to Google Sheets:', error);
@@ -540,8 +541,9 @@ function sendSurveyToGoogleSheets(surveyData) {
     
     console.log('📋 Including userId in survey data:', userId);
     
-    // UPDATED Google Apps Script URL  
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkCJEZoUKyEUxdV8eWWvHPpIKlZ_SUJpkYfUgTKU7Ly1rpoTXnHofhSNXkp8LpeMUktw/exec';
+    // UPDATED Google Apps Script URL (with cache busting)
+    const cacheBuster = Date.now();
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkCJEZoUKyEUxdV8eWWvHPpIKlZ_SUJpkYfUgTKU7Ly1rpoTXnHofhSNXkp8LpeMUktw/exec?cb=' + cacheBuster;
     
     const formData = new FormData();
     formData.append('UserId', userId); // Add unique user ID
@@ -578,16 +580,16 @@ function sendSurveyToGoogleSheets(surveyData) {
         body: formData
     })
     .then(response => {
-        console.log('📞 Survey response received from Apps Script:', response.status, response.statusText);
-        console.log('Survey response status:', response.status);
-        console.log('Survey response statusText:', response.statusText);
+        console.log('🚀 [DEBUG v2.0] Survey response received from Apps Script:', response.status, response.statusText);
+        console.log('📊 [DEBUG v2.0] Survey response status:', response.status);
+        console.log('📝 [DEBUG v2.0] Survey response statusText:', response.statusText);
         
         // DEBUG MODE: Read actual response
-        console.log('🔍 Reading actual survey response from Apps Script...');
+        console.log('🔍 [DEBUG v2.0] Reading actual survey response from Apps Script...');
         return response.text();
     })
     .then(data => {
-        console.log('✅ Raw response from Apps Script:', data);
+        console.log('✅ [DEBUG v2.0] Raw response from Apps Script:', data);
         try {
             const responseData = JSON.parse(data);
             console.log('📋 Parsed Apps Script response:', responseData);
