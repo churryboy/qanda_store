@@ -176,76 +176,90 @@ const userSession = new UserSession();
 window.userSession = userSession;
 window.debugSession = () => userSession.debugSession();
 
-// Widget ID Mapping for Survey Tracking
+// Widget ID Mapping for Survey Tracking - Category-based System
+// 1xxx = 수학 관련, 2xxx = 영어 관련, 3xxx = 국어 관련, 4xxx = 사탐 관련, 5xxx = 과탐 관련, 6xxx = 학교생활
 const widgetIdMapping = {
-    'exam-summary': 1001,
-    'english-essay': 1002,
-    'math-helper': 1003,
-    'flashcard': 1004,
-    'club-report': 1005,
-    'personal-statement': 1006,
-    'interview-practice': 1007,
-    'career-explorer': 1008,
-    'class-notice': 1009,
-    'conversation-practice': 1010,
-    'study-scheduler': 1011,
-    'mental-care': 1012,
-    'webtoon-ideas': 1013,
-    'video-script': 1014,
-    'rap-lyrics': 1015,
-    'art-design': 1016,
-    'school-record': 1017,
-    'performance-assessment': 1018,
-    'math-formula-cards': 2001,
-    'graph-visualizer': 2002,
-    'wrong-answer-generator': 2003,
-    'essay-helper': 3001,
-    'pronunciation-trainer': 3002,
-    'reading-summarizer': 3003,
-    'conversation-chatbot': 3004,
-    'text-summarizer': 4001,
-    'literature-analyzer': 4002,
-    'vocabulary-cards': 4003,
-    'writing-corrector': 4004,
-    'classical-literature': 4005,
-    'sentence-analyzer': 4006,
-    'timeline-generator': 5001,
-    'concept-comparator': 5002,
-    'real-world-connector': 5003,
-    'map-interpreter': 5004,
-    'law-simulator': 6001,
-    'virtual-experiment': 6002,
-    'birthday-reminder': 7001,
-    'emotion-diary': 7002,
-    'motivation-messages': 7003,
-    'stress-relief': 7004,
-    'integral-graph': 2004,
-    'limit-simulator': 2005,
-    'probability-simulator': 2006,
-    'normal-distribution': 2007,
-    'sequence-helper': 2008,
-    'set-proposition-quiz': 2009,
-    'trigonometry-visualizer': 2010,
-    'electric-circuit-sim': 6003,
-    'optics-simulator': 6004,
-    'celestial-simulator': 6005,
-    'volcano-simulator': 6006,
-    'mineral-guide': 6007,
-    'space-exploration-timeline': 6008,
-    'cell-3d-viewer': 6009,
-    'human-body-simulator': 6010,
-    'taxonomy-quiz': 6011,
-    'chemical-formula-completer': 6012,
-    'periodic-table-explorer': 6013,
-    'person-event-matching': 5005,
-    'historical-source-interpreter': 5006,
-    'cultural-heritage-guide': 5007,
-    'ethics-philosopher-cards': 5008,
-    'ideology-comparison': 5009,
-    'ethics-dilemma-discussion': 5010,
-    'social-constitution-summary-cards': 5011,
-    'precedent-learner': 5012,
-    'political-system-comparison': 5013
+    // 수학 관련 (1xxx)
+    'math-helper': 1001,                    // 수학풀이 도우미
+    'math-formula-cards': 1002,             // 공식암기 카드
+    'graph-visualizer': 1003,               // 그래프 시각화
+    'wrong-answer-generator': 1004,         // 오답노트 자동 생성기
+    'integral-graph': 1005,                 // 적분 그래프 시각화
+    'limit-simulator': 1006,                // 극한 시뮬레이터
+    'probability-simulator': 1007,          // 확률 시뮬레이터
+    'normal-distribution': 1008,            // 정규분포 계산기
+    'sequence-helper': 1009,                // 수열 도우미
+    'set-proposition-quiz': 1010,           // 집합 명제 퀴즈
+    'trigonometry-visualizer': 1011,        // 삼각비 시각화
+    
+    // 영어 관련 (2xxx)
+    'english-essay': 2001,                  // 영어 에세이 첨삭
+    'essay-helper': 2002,                   // 에세이 첨삭 도우미
+    'pronunciation-trainer': 2003,          // 발음 교정기
+    'reading-summarizer': 2004,             // 독해 요약 훈련
+    'conversation-chatbot': 2005,           // 영어 회화 챗봇
+    
+    // 국어 관련 (3xxx)
+    'text-summarizer': 3001,                // 비문학 지문 요약기
+    'literature-analyzer': 3002,            // 문학작품 해석
+    'vocabulary-cards': 3003,               // 어휘 학습 카드
+    'writing-corrector': 3004,              // 작문 첨삭
+    'classical-literature': 3005,           // 고전 문학 풀이
+    'sentence-analyzer': 3006,              // 구문 분석기
+    
+    // 사탐 관련 (4xxx)
+    'timeline-generator': 4001,             // 연표 생성기
+    'concept-comparator': 4002,             // 개념 비교표
+    'real-world-connector': 4003,           // 현실세계 개념 연동
+    'map-interpreter': 4004,                // 지도 해석 훈련
+    'person-event-matching': 4005,          // 인물사건 매칭 퀴즈
+    'historical-source-interpreter': 4006,  // 사료 해석기
+    'cultural-heritage-guide': 4007,        // 시대별 문화재 도감
+    'ethics-philosopher-cards': 4008,       // 윤리 사상가 카드
+    'ideology-comparison': 4009,            // 사상 비교표
+    'ethics-dilemma-discussion': 4010,      // 윤리 딜레마 토론
+    'social-constitution-summary-cards': 4011, // 헌법 요약 카드
+    'precedent-learner': 4012,              // 판례 학습기
+    'political-system-comparison': 4013,    // 정치제도 비교표
+    
+    // 과탐 관련 (5xxx)
+    'law-simulator': 5001,                  // 법칙 시뮬레이터
+    'virtual-experiment': 5002,             // 가상 실험 체험
+    'electric-circuit-sim': 5003,           // 전기 회로 시뮬레이터
+    'optics-simulator': 5004,               // 광학 시뮬레이터
+    'celestial-simulator': 5005,            // 천체 시뮬레이터
+    'volcano-simulator': 5006,              // 화산 시뮬레이터
+    'mineral-guide': 5007,                  // 광물 도감
+    'space-exploration-timeline': 5008,     // 우주 탐사 연대표
+    'cell-3d-viewer': 5009,                 // 세포 구조 3D 뷰어
+    'human-body-simulator': 5010,           // 인체 시스템 시뮬레이터
+    'taxonomy-quiz': 5011,                  // 계통도 퀴즈
+    'chemical-formula-completer': 5012,     // 화학식 자동 완성기
+    'periodic-table-explorer': 5013,        // 주기율표 탐색기
+    
+    // 학교생활 (6xxx)
+    'conversation-practice': 6001,          // 친구와 대화 연습하기
+    'mental-care': 6002,                    // 멘탈케어 위젯
+    'webtoon-ideas': 6003,                  // 웹툰 아이디어 봇
+    'video-script': 6004,                   // 영상 시나리오 작성기
+    'rap-lyrics': 6005,                     // 랩 가사 도우미
+    'art-design': 6006,                     // 그림 디자인 봇
+    'birthday-reminder': 6007,              // 친구 생일 알림
+    'emotion-diary': 6008,                  // 감정기록 다이어리
+    'motivation-messages': 6009,            // 동기부여 메시지
+    'stress-relief': 6010,                  // 스트레스 해소 챌린지
+    
+    // 일반 기능 (기존 위젯들 - 카테고리 미분류)
+    'exam-summary': 7001,                   // 시험 요약봇
+    'flashcard': 7002,                      // 암기 카드 만들기
+    'club-report': 7003,                    // 동아리 보고서 초안
+    'personal-statement': 7004,             // 자소서 보고서 초안
+    'interview-practice': 7005,             // 면접 질문 연습
+    'career-explorer': 7006,                // 진로 탐색 도우미
+    'class-notice': 7007,                   // 학급 공지 요약
+    'study-scheduler': 7008,                // 학습 스케줄러
+    'school-record': 7009,                  // 생기부 도우미
+    'performance-assessment': 7010          // 수행평가 봇
 };
 
 // Function to get widget ID by data-page attribute
