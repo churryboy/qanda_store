@@ -349,8 +349,8 @@ window.resetWelcomeModal = resetWelcomeModal;
 function sendToGoogleSheets(userName, userGrade) {
     console.log('Sending to Google Sheets:', { userName, userGrade });
     
-    // Actual Google Apps Script URL
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzCJr9dlyWUYPBMhXxOKct6gTAy0qW_6oV3k_suhfkQVLL4G8yV6wM0Y8dN0oMPQulOPA/exec';
+    // Updated Google Apps Script URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwnNsaATdhEeRJ7QK-O83XRn0TduHa09pLr25iMGWGHN_630TEwvF6XUW8mNrCRSsJZxw/exec';
     
     const formData = new FormData();
     formData.append('Name', userName);
@@ -400,8 +400,8 @@ function showWelcomeMessage(userName, userGrade) {
 function sendSurveyToGoogleSheets(surveyData) {
     console.log('📊 Sending survey data to Google Sheets:', surveyData);
     
-    // Same Google Apps Script URL but with survey data
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzCJr9dlyWUYPBMhXxOKct6gTAy0qW_6oV3k_suhfkQVLL4G8yV6wM0Y8dN0oMPQulOPA/exec';
+    // Updated Google Apps Script URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwnNsaATdhEeRJ7QK-O83XRn0TduHa09pLr25iMGWGHN_630TEwvF6XUW8mNrCRSsJZxw/exec';
     
     const formData = new FormData();
     formData.append('Type', 'Survey'); // Distinguish from welcome data
