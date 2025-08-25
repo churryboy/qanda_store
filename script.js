@@ -479,6 +479,11 @@ function sendToGoogleSheets(userName, userGrade, userPhone = '') {
     formData.append('Grade', userGrade);
     formData.append('Phone', userPhone);
     
+    console.log('📋 Welcome FormData entries:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`   ${key}: ${value}`);
+    }
+    
     console.log('Data to be sent:', {
         UserId: userId,
         Name: userName,
@@ -554,6 +559,11 @@ function sendSurveyToGoogleSheets(surveyData) {
     formData.append('Helpfulness', surveyData.helpfulness);
     formData.append('Need', surveyData.need);
     formData.append('UtmSource', surveyData.utmSource);
+    
+    console.log('📋 Survey FormData entries:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`   ${key}: ${value}`);
+    }
     formData.append('Timestamp', surveyData.timestamp);
     
     console.log('📋 Survey data to be sent to Apps Script:');
