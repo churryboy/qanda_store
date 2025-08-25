@@ -13,7 +13,11 @@ class UserSession {
     }
     
     setUser(name, grade) {
+        // Generate unique user ID
+        const uniqueUserId = this.generateUniqueUserId(name, grade);
+        
         this.userData = {
+            userId: uniqueUserId,
             name: name,
             grade: grade,
             timestamp: new Date().toISOString(),
@@ -24,13 +28,15 @@ class UserSession {
         localStorage.setItem(this.sessionKey, JSON.stringify(this.userData));
         localStorage.setItem('userName', name);
         localStorage.setItem('userGrade', grade);
+        localStorage.setItem('userId', uniqueUserId); // Store unique ID separately
         localStorage.setItem('hasVisited', 'true');
         
-        console.log('👤 User session created:', this.userData);
+        console.log('👤 User session created with unique ID:', this.userData);
         console.log('💾 Stored in localStorage:', {
             sessionData: localStorage.getItem(this.sessionKey),
             userName: localStorage.getItem('userName'),
-            userGrade: localStorage.getItem('userGrade')
+            userGrade: localStorage.getItem('userGrade'),
+            userId: localStorage.getItem('userId')
         });
         
         return this.userData;
@@ -42,6 +48,15 @@ class UserSession {
             const sessionData = localStorage.getItem(this.sessionKey);
             if (sessionData) {
                 this.userData = JSON.parse(sessionData);
+                
+                // Ensure userId exists (backward compatibility)
+                if (!this.userData.userId && this.userData.name && this.userData.grade) {
+                    this.userData.userId = this.generateUniqueUserId(this.userData.name, this.userData.grade);
+                    localStorage.setItem(this.sessionKey, JSON.stringify(this.userData));
+                    localStorage.setItem('userId', this.userData.userId);
+                    console.log('🔄 Generated missing userId for existing session:', this.userData.userId);
+                }
+                
                 console.log('📖 Loaded user session from localStorage:', this.userData);
                 return this.userData;
             }
@@ -49,15 +64,25 @@ class UserSession {
             // Fallback to individual items
             const name = localStorage.getItem('userName');
             const grade = localStorage.getItem('userGrade');
+            let userId = localStorage.getItem('userId');
             
             if (name && grade) {
+                // Generate userId if it doesn't exist
+                if (!userId) {
+                    userId = this.generateUniqueUserId(name, grade);
+                    localStorage.setItem('userId', userId);
+                    console.log('🆔 Generated new userId for existing user:', userId);
+                }
+                
                 this.userData = {
+                    userId: userId,
                     name: name,
                     grade: grade,
                     timestamp: new Date().toISOString(),
                     sessionId: this.generateSessionId()
                 };
-                console.log('📖 Reconstructed user session from individual items:', this.userData);
+                
+                console.log('📖 Reconstructed user session with userId:', this.userData);
                 // Save the reconstructed session
                 localStorage.setItem(this.sessionKey, JSON.stringify(this.userData));
                 return this.userData;
@@ -99,6 +124,27 @@ class UserSession {
     
     generateSessionId() {
         return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    generateUniqueUserId(name, grade) {
+        // Create a more robust unique ID
+        const timestamp = Date.now();
+        const random = Math.random().toString(36).substr(2, 9);
+        const nameHash = this.simpleHash(name);
+        const gradeHash = this.simpleHash(grade);
+        
+        return `user_${nameHash}_${gradeHash}_${timestamp}_${random}`;
+    }
+    
+    simpleHash(str) {
+        let hash = 0;
+        if (str.length === 0) return hash;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32-bit integer
+        }
+        return Math.abs(hash).toString(36);
     }
     
     // Debug function
@@ -349,14 +395,22 @@ window.resetWelcomeModal = resetWelcomeModal;
 function sendToGoogleSheets(userName, userGrade) {
     console.log('Sending to Google Sheets:', { userName, userGrade });
     
+    // Get current user session to include userId
+    const currentUser = userSession.getUser();
+    const userId = currentUser ? currentUser.userId : 'unknown_user';
+    
+    console.log('📋 Including userId in welcome data:', userId);
+    
     // Updated Google Apps Script URL
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwnNsaATdhEeRJ7QK-O83XRn0TduHa09pLr25iMGWGHN_630TEwvF6XUW8mNrCRSsJZxw/exec';
     
     const formData = new FormData();
+    formData.append('UserId', userId); // Add unique user ID
     formData.append('Name', userName);
     formData.append('Grade', userGrade);
     
     console.log('Data to be sent:', {
+        UserId: userId,
         Name: userName,
         Grade: userGrade
     });
@@ -400,10 +454,17 @@ function showWelcomeMessage(userName, userGrade) {
 function sendSurveyToGoogleSheets(surveyData) {
     console.log('📊 Sending survey data to Google Sheets:', surveyData);
     
+    // Get current user session to include userId
+    const currentUser = userSession.getUser();
+    const userId = currentUser ? currentUser.userId : 'unknown_user';
+    
+    console.log('📋 Including userId in survey data:', userId);
+    
     // Updated Google Apps Script URL
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwnNsaATdhEeRJ7QK-O83XRn0TduHa09pLr25iMGWGHN_630TEwvF6XUW8mNrCRSsJZxw/exec';
     
     const formData = new FormData();
+    formData.append('UserId', userId); // Add unique user ID
     formData.append('Type', 'Survey'); // Distinguish from welcome data
     formData.append('WidgetId', surveyData.widgetId);
     formData.append('WidgetTitle', surveyData.widgetTitle);
@@ -417,6 +478,7 @@ function sendSurveyToGoogleSheets(surveyData) {
     
     console.log('📋 Survey data to be sent to Apps Script:');
     console.log('   🆔 Type: Survey');
+    console.log('   👤 UserId:', userId);
     console.log('   🔢 WidgetId:', surveyData.widgetId);
     console.log('   📝 WidgetTitle:', surveyData.widgetTitle);
     console.log('   👤 UserName:', surveyData.userName);
@@ -426,7 +488,7 @@ function sendSurveyToGoogleSheets(surveyData) {
     console.log('   ⭐ Need:', surveyData.need);
     console.log('   🔗 UtmSource:', surveyData.utmSource);
     
-    console.log('🎯 Expected: Apps Script should find user with name="' + surveyData.userName + '" and grade="' + surveyData.userGrade + '"');
+    console.log('🎯 Expected: Apps Script should find user with userId="' + userId + '"');
     console.log('📊 Expected: Should add data to existing row horizontally, not create new row');
     
     // Send survey data to Google Sheets
